@@ -19,7 +19,7 @@ test('every imported world ships its HTML and a real JPEG preview', () => {
 })
 
 test('the supplied scenes belong to the requested book numbers', () => {
-  const expected = { 6: 'El mapa invisible', 10: 'Una bonita reacción', 11: 'El viaje de papel',
+  const expected = { 7: 'Tu luz', 8: 'El mapa invisible', 10: 'Una bonita reacción', 11: 'El viaje de papel',
     13: 'La puerta violeta', 17: 'Un poquito de abrigo', 21: 'Entre tinta y flores' }
   for (const [id, title] of Object.entries(expected)) {
     assert.equal(htmlChapters[id].title, title)

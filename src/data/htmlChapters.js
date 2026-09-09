@@ -44,11 +44,22 @@ export const htmlChapters = {
       'No necesitaba saberlo todo. Le bastaba con conservar esas ganas tan suyas de descubrir un poquito más.',
     ],
   },
-  6: {
+  7: {
+    title: 'Tu luz',
+    shortText: 'Ni los días grises podían apagar tu luz.',
+    html: 'chapters/07/index.html',
+    preview: 'chapters/07/preview.jpg',
+    caption: 'Después de la lluvia, la princesa encontró una luz que parecía reconocerla.',
+    paragraphs: [
+      'La cuidó entre sus manos. No hacía falta que alumbrara todo el cielo: bastaba con que siguiera allí, acompañando su siguiente paso.',
+      'Y cuando volvió a mirar, comprendió que aquella luz también era suya. Incluso en los días difíciles, nunca había dejado de brillar.',
+    ],
+  },
+  8: {
     title: 'El mapa invisible',
     shortText: 'Hay caminos que llevan a quienes te quieren.',
-    html: 'chapters/06/index.html',
-    preview: 'chapters/06/preview.jpg',
+    html: 'chapters/08/index.html',
+    preview: 'chapters/08/preview.jpg',
     caption: 'La princesa encontró unas huellitas. No aparecían en ningún mapa, pero parecían conocer el camino.',
     paragraphs: [
       'Las siguió despacito, entre árboles y pequeñas luces. Alguien la esperaba al final, sin reloj y con muchas ganas de verla.',

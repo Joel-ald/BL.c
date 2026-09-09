@@ -1,4 +1,5 @@
 import { htmlChapters } from './htmlChapters.js'
+import { bookChapters } from './bookChapters.js'
 
 const books = [
   { id: 1, age: 1, title: 'La primera luz', shortText: 'El comienzo de una historia que ya brillaba.', color: '#b51f4f', symbol: 'star', unlocked: true, special: false, height: 118, width: 38, tilt: -3 },
@@ -28,4 +29,4 @@ const books = [
 
 export default books.map(book => htmlChapters[book.id]
   ? { ...book, title: htmlChapters[book.id].title, shortText: htmlChapters[book.id].shortText }
-  : book)
+  : book).map(book => ({ ...book, unlocked: Boolean(bookChapters[book.id]) }))

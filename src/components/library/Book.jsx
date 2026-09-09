@@ -1,4 +1,5 @@
 import MagicSymbol from './MagicSymbol.jsx'
+import { LockKeyhole } from 'lucide-react'
 import { toRoman } from '../../data/toRoman.js'
 
 const materials = ['storybook']
@@ -23,10 +24,10 @@ function Book({ book, disabled, selected, visited, onSelect, onPreview, presenta
       onFocus={() => !disabled && onPreview?.(book)}
       onPointerEnter={() => !disabled && onPreview?.(book)}
       disabled={disabled || !book.unlocked}
-      aria-label={`Abrir libro ${book.id}: ${book.title}`}
+      aria-label={`${book.unlocked ? 'Abrir' : 'Sellado'} libro ${book.id}: ${book.title}`}
       aria-pressed={selected}
       aria-describedby={visited ? `visited-book-${book.id}` : undefined}
-      title={visited ? `${book.title} · Mundo visitado` : book.title}
+      title={!book.unlocked ? `${book.title} · La llave de este secreto aún está por llegar` : visited ? `${book.title} · Mundo visitado` : book.title}
     >
       <span className="book__pages" aria-hidden="true">
         <i />
@@ -39,7 +40,7 @@ function Book({ book, disabled, selected, visited, onSelect, onPreview, presenta
         <span className="book__ornament book__ornament--top" aria-hidden="true" />
         <span className="book__medallion">
           <span className="book__medallion-content">
-            <MagicSymbol name={book.symbol} className="book__symbol" />
+            {book.unlocked ? <MagicSymbol name={book.symbol} className="book__symbol" /> : <LockKeyhole size={18} strokeWidth={1.5} className="book__symbol" aria-hidden="true" />}
             {!book.special && <span className="book__number">{toRoman(book.id)}</span>}
           </span>
         </span>
