@@ -154,11 +154,28 @@ function useMagicSound() {
 
   const playBook = useCallback(
     (special = false) => {
+      const context = ensureContext()
+      if (context && masterRef.current && !mutedRef.current && !document.hidden) {
+        const source = context.createBufferSource(), filter = context.createBiquadFilter(), gain = context.createGain()
+        const buffer = context.createBuffer(1, Math.ceil(context.sampleRate * .24), context.sampleRate)
+        const samples = buffer.getChannelData(0)
+        for (let i = 0; i < samples.length; i++) samples[i] = Math.random() * 2 - 1
+        source.buffer = buffer; filter.type = 'bandpass'; filter.frequency.value = 1600; filter.Q.value = .6
+        const at = context.currentTime
+        gain.gain.setValueAtTime(.0001, at); gain.gain.exponentialRampToValueAtTime(.04, at + .04); gain.gain.exponentialRampToValueAtTime(.0001, at + .24)
+        source.connect(filter); filter.connect(gain); gain.connect(masterRef.current)
+        source.onended = () => { source.disconnect(); filter.disconnect(); gain.disconnect() }
+        source.start(); source.stop(at + .25)
+      }
       tone({ frequency: special ? 392 : 246.94, endFrequency: special ? 987.77 : 392, duration: special ? 0.65 : 0.28, type: 'triangle', gain: special ? 0.09 : 0.045 })
       if (special) tone({ frequency: 659.25, duration: 0.9, gain: 0.045, delay: 0.14 })
     },
-    [tone],
+    [tone, ensureContext],
   )
+
+  const playLock = useCallback(() => {
+    tone({ frequency: 680, endFrequency: 310, duration: .075, type: 'triangle', gain: .04 })
+  }, [tone])
 
   const playPortal = useCallback((direction) => {
     stopPortalSound()
@@ -322,6 +339,7 @@ function useMagicSound() {
     playCandle,
     playChime,
     playBook,
+    playLock,
     playBookHover,
     playPortal,
     stopPortalSound,

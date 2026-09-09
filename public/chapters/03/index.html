@@ -16,8 +16,16 @@ html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#000}
 @media(max-aspect-ratio:3/4){.scene{width:min(125vw,120svh)}}
 @media(prefers-reduced-motion:reduce){.scene img{transform:none}}
 </style>
+<style>
+.scene{top:44%;width:min(100vw,calc((100svh - 245px)*1.414));max-width:none}
+.forest-message{position:fixed;bottom:max(28px,env(safe-area-inset-bottom));left:22px;right:22px;text-align:center;color:#d5ebe0;font:20px/1.45 Georgia,serif;max-width:570px;margin:0 auto;text-wrap:balance;pointer-events:none}
+.forest-message strong{display:block;font-weight:normal;font-size:25px;color:#eef7df;margin-bottom:10px}
+@media(max-width:500px){.scene{width:110vw}.forest-message{font-size:17px}.forest-message strong{font-size:22px}}
+@media(max-height:500px){.scene{top:35%;width:48vw}.forest-message{bottom:16px;font-size:16px}.forest-message strong{font-size:20px;margin-bottom:4px}}
+</style>
 </head>
 <body>
+<p class="forest-message"><strong>Lo desconocido también puede guardar cosas bonitas.</strong>Puedes acercarte con cuidado y a tu ritmo. Sentir miedo no significa que no puedas descubrir algo nuevo.</p>
 <!-- Dinosaur layers: Christian Alder's supplied Parallax Layers example. See CREDITS.md. -->
 <main class="scene" role="img" aria-label="Un bosque prehistórico de capas verdes, con dinosaurios entre árboles, un río y rayos de sol.">
 <img src="assets/dino-layer10.svg" alt="" data-depth="1">

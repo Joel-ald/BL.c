@@ -1,8 +1,8 @@
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useExperienceQuality } from '../../performance/useExperienceQuality.js'
 
-const mainMessage = 'A veces los días son lluviosos, pero el sol nunca deja de volver.'
-const supportMessage = 'Y cuando dudes de ti, recuerda esto: incluso bajo la tormenta, seguiste caminando.'
+const mainMessage = 'A veces toca caminar bajo la lluvia. Pero el cielo no se queda gris para siempre.'
+const supportMessage = 'Mientras vuelve el sol, puedes ir despacio, descansar y dejar que te acompañen. No tienes que poder con todo a la vez.'
 
 const rainDrops = Array.from({ length: 500 }, (_, index) => ({
   id: index,

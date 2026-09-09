@@ -8,6 +8,7 @@ https://codepen.io/bealivefr/pen/VwKrbYg
 Original scene, illustration, canvas animation and narrative created for this standalone adaptation.
 Everything is embedded. No network, libraries or external assets required. -->
 <style>
+.signature,.dedication{display:none!important}
 :root{color-scheme:dark;--ink:#e6f6ff;--soft:#8cabc2;--edge:#a4d3ee35;--panel:#0b1e344d;--accent:#72ddff}
 *{box-sizing:border-box}html,body{margin:0;width:100%;min-height:100%;background:#060c1c}body{font-family:Arial,Helvetica,sans-serif;color:var(--ink)}
 .story{height:100svh;min-height:580px;position:relative;overflow:hidden;isolation:isolate;background:#060c1c}canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
@@ -21,10 +22,10 @@ h1,h2{font-family:Georgia,'Times New Roman',serif;font-size:clamp(31px,4.25vw,59
 </style></head>
 <body><main class="story" aria-label="Tu luz: una pequeña historia de noche a día">
 <canvas id="scene" aria-label="Un cristal azul sube una pendiente, deja luces tras de sí y llega a la cima al amanecer" role="img"></canvas>
-<div class="signature"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor"><path d="m10 1 8 9-8 9-8-9Z"/><path d="m2 10 8-4 8 4-8 4Z"/></svg><span>A tu ritmo, con tu luz</span></div><div class="dedication">para ti ♡</div>
-<section class="words" id="night" aria-hidden="true"><span class="eyebrow">Incluso aquí</span><h1>Hay días en los que cuesta ver<br>hasta dónde puedes <em>llegar…</em></h1><p>Y aun así, hay una luz en ti.</p></section>
+<div class="signature" hidden><svg viewBox="0 0 20 20" fill="none" stroke="currentColor"><path d="m10 1 8 9-8 9-8-9Z"/><path d="m2 10 8-4 8 4-8 4Z"/></svg><span>A tu ritmo, con tu luz</span></div>
+<section class="words" id="night" aria-hidden="true"><span class="eyebrow">Incluso aquí</span><h1>Hay días en los que cuesta ver<br>hasta dónde puedes <em>llegar…</em></h1><p>Un intento difícil no decide hasta dónde puedes llegar.</p></section>
 <section class="words" id="dawn" aria-hidden="true"><span class="eyebrow">Un pasito más</span><h2>Pero mira: incluso con dudas,<br>has seguido <em>avanzando.</em></h2></section>
-<section class="words end" id="day" aria-hidden="true"><span class="eyebrow">Todo ese camino es tuyo</span><h2>Mira todo lo que<br>has <em>podido.</em></h2><p>Y todo lo bonito que todavía te espera.</p><span class="after">Yo creo en ti. También cuando a ti te cuesta.</span></section>
+<section class="words end" id="day" aria-hidden="true"><span class="eyebrow">Todo ese camino es tuyo</span><h2>Mira todo lo que<br>has <em>podido.</em></h2><p>Y todo lo bonito que todavía te espera.</p><span class="after">No hace falta llegar de una sola vez. Descansar y volver a intentarlo también es avanzar.</span></section>
 <p class="sr-only" id="announcement" aria-live="polite" aria-atomic="true"></p>
 <button class="replay" id="again"><span aria-hidden="true">↺</span>Volver a empezar</button>
 </main>

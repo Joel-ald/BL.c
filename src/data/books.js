@@ -29,4 +29,4 @@ const books = [
 
 export default books.map(book => htmlChapters[book.id]
   ? { ...book, title: htmlChapters[book.id].title, shortText: htmlChapters[book.id].shortText }
-  : book).map(book => ({ ...book, unlocked: Boolean(bookChapters[book.id]) }))
+  : book).map(book => ({ ...book, shortText: bookChapters[book.id]?.shortText ?? book.shortText, unlocked: Boolean(bookChapters[book.id]) }))

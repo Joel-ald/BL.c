@@ -6,7 +6,7 @@ export function createPortalSound(context, destination, direction) {
   const sources = []
   let stopped = false
   const bus = context.createGain()
-  bus.gain.value = 0.65
+  bus.gain.value = 0.48
   bus.connect(destination)
   nodes.push(bus)
 
@@ -44,7 +44,7 @@ export function createPortalSound(context, destination, direction) {
   filter.frequency.setValueAtTime(entering ? 650 : 1400, start)
   filter.frequency.exponentialRampToValueAtTime(entering ? 1800 : 500, start + duration)
   breath.gain.setValueAtTime(0.0001, start)
-  breath.gain.exponentialRampToValueAtTime(0.28, start + duration * 0.35)
+  breath.gain.exponentialRampToValueAtTime(0.16, start + duration * 0.35)
   breath.gain.exponentialRampToValueAtTime(0.0001, start + duration)
   air.connect(filter)
   filter.connect(breath)

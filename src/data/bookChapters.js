@@ -1,9 +1,11 @@
 // Add each chapter here; the book and portal remain shared across all 23 books.
 import { htmlChapters } from './htmlChapters.js'
+import { chapterCopy } from './chapterCopy.js'
 import { buildHtmlChapters } from './htmlChapterConfig.js'
 
 export const bookChapters = {
   1: {
+    ...chapterCopy[1],
     world: 'galaxy',
     previewSrc: `${import.meta.env?.BASE_URL ?? '/'}images/galaxy-preview.jpg`,
     entryLabel: 'Entrar al nacimiento de la primera luz',
@@ -23,4 +25,7 @@ export const bookChapters = {
     ],
   },
   ...buildHtmlChapters(htmlChapters, import.meta.env?.BASE_URL ?? '/'),
+}
+for (const [id, copy] of Object.entries(chapterCopy)) {
+  if (bookChapters[id]) Object.assign(bookChapters[id], copy)
 }

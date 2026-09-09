@@ -99,10 +99,10 @@ export default function GalaxyWorld({ onClose, capture = false, captureAge = 12 
       <div className={`galaxy-story ${formed ? 'is-formed' : ''}`}>
         <p className="galaxy-story__before">Antes de ti, el cielo guardaba silencio.</p>
         <div className="galaxy-story__after" aria-hidden={!formed}>
-          <span className="galaxy-story__chapter">I · La primera luz</span>
+
           <h2>Y entonces,<br />llegaste tú.</h2>
-          <p>No sé cómo empezó el universo.<br />Pero el mío es más bonito<br />desde que estás en él, Blanca.</p>
-          <p className={`galaxy-story__secret ${touched ? 'is-visible' : ''}`} aria-live="polite">{touched ? 'Entre tantas estrellas, yo te elegiría a ti.' : ''}</p>
+          <p>No sé cómo empezó el universo.<br />Pero el 9 de septiembre de 2003<br />empezó un mundo nuevo para quienes te quieren.</p>
+          <p className={`galaxy-story__secret ${touched ? 'is-visible' : ''}`} aria-live="polite">{touched ? 'Hoy son 23 años de historia. Y todavía queda tanto por descubrir.' : ''}</p>
         </div>
       </div>
       </>}

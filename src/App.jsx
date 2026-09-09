@@ -18,6 +18,7 @@ function App() {
   const {
     muted,
     playBook,
+    playLock,
     playBookHover,
     playPortal,
     stopPortalSound,
@@ -97,9 +98,10 @@ function App() {
   }, [])
 
   const selectBook = useCallback((book) => {
+    if (!book.unlocked) { playLock(); return }
     playBook(book.special)
     setSelectedBook(book)
-  }, [playBook])
+  }, [playBook, playLock])
 
   const closeBook = useCallback(() => setSelectedBook(null), [])
 

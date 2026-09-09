@@ -1,5 +1,6 @@
 // One entry per imported HTML. Copy the ready-to-fill example from CHAPTERS.md.
-export const htmlChapters = {
+import { chapterCopy } from './chapterCopy.js'
+const entries = {
   23: {
     title: 'Misión: cumpleaños',
     shortText: 'Una última sorpresa, solo para ti.',
@@ -144,3 +145,4 @@ export const htmlChapters = {
     ],
   },
 }
+export const htmlChapters = Object.fromEntries(Object.entries(entries).map(([id, entry]) => [id, { ...entry, ...chapterCopy[id] }]))

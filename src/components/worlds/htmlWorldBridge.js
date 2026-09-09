@@ -100,6 +100,7 @@
   style.textContent += 'button.sound,button[aria-label="Activar sonidos"],button[aria-label="Silenciar sonidos"]{display:none!important}'
   document.head.append(style)
   style.textContent += ':root{color-scheme:only light!important}'
+  style.textContent += '.brand,.signature,.dedication,.edition{display:none!important}'
   const colorScheme = document.createElement('meta')
   colorScheme.name = 'color-scheme'
   colorScheme.content = 'only light'

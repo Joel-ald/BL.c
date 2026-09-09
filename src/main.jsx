@@ -11,6 +11,7 @@ import './styles/chapter-portal.css'
 import './styles/book-reading.css'
 import './styles/galaxy-world.css'
 import './styles/performance.css'
+import './styles/book-details.css'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>

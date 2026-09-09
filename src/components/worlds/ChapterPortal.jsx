@@ -39,6 +39,7 @@ export function ChapterPreview({ chapter, world, previewRef, onEnter, disabled }
     <button
       ref={previewRef}
       className="rain-preview chapter-preview"
+      data-chapter={chapter.html?.split('/')[1]}
       data-shimmer={visible && !reducedMotion && !disabled}
       type="button"
       disabled={disabled}
