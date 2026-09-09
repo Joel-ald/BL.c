@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="color-scheme" content="only light">
+<title>Misión: cumpleaños</title>
+<style>
+:root{color-scheme:only light;font-family:Georgia,serif;color:#293c42;background:#102326}*{box-sizing:border-box}body{margin:0;min-height:100svh}button,input{font:inherit}button{cursor:pointer}button:focus-visible,input:focus-visible{outline:3px solid #e98099;outline-offset:5px}
+canvas{position:fixed;inset:0;width:100%;height:100%;pointer-events:none}#paper-scene{position:relative;min-height:100svh;padding:90px 24px 48px;display:grid;place-items:center;background:#b9d9d5;transition:opacity 1.2s}body.depart #paper-scene{opacity:0;pointer-events:none}.paper{position:relative;width:min(100%,430px);padding:30px 24px 26px;background:#fff9ee;border:1px solid #354752;border-radius:7px;box-shadow:-5px 5px 0 #fcf3e6,-7px 7px 0 #354752,-11px 11px 0 #e5d9c5,-13px 13px 0 #354752,0 22px 30px #203d4225;transform:rotate(-1.5deg)}.stamp{text-align:center;border:2px solid #ce8493;padding:17px 8px;margin-bottom:24px;background:#f4d6d9;outline:1px dashed #a35870;outline-offset:-7px}.stamp small{display:block;font:11px system-ui;letter-spacing:2px;margin-bottom:7px}h1{font-size:25px;margin:0;font-weight:normal}label{position:relative;display:flex;gap:13px;align-items:center;min-height:66px;border-bottom:1px solid #b7c7c95c;font:italic 18px/1.4 Georgia,serif;cursor:pointer;padding:10px 0}input{flex:none;width:23px;height:23px;accent-color:#467f78}label span{transition:color .35s}input:checked+span{color:#87928b;text-decoration:line-through;text-decoration-color:#bc6d83;text-decoration-thickness:2px}.signature{text-align:right;margin:23px 0 0;font:italic 15px Georgia;color:#ae6b7e}
+#nudge{position:fixed;z-index:8;left:50%;bottom:28px;transform:translateX(-50%);width:min(90%,330px);display:flex;align-items:center;gap:15px;padding:15px 20px;background:#fff9ee;border:1px solid #d7b286;border-radius:8px;box-shadow:0 8px 30px #0003;font:italic 18px/1.4 Georgia;pointer-events:none}#nudge[hidden]{display:none}.face{position:relative;flex:none;width:52px;height:52px;background:#ffe8a3;border-radius:50%;box-shadow:0 0 18px #ffd87666}.face:before{content:'';position:absolute;left:14px;top:17px;width:5px;height:7px;border-radius:50%;background:#745234;box-shadow:19px 0 #745234}.face:after{content:'';position:absolute;left:18px;top:29px;width:17px;height:9px;border-bottom:2px solid #745234;border-radius:50%}
+#oops{position:fixed;inset:0;display:grid;place-content:center;text-align:center;color:#ffe6c1;font:italic 30px Georgia;opacity:0;pointer-events:none;transition:opacity .5s}#oops small{font-size:17px;margin-top:12px;color:#b5cbd0}#oops.show{opacity:1}#finale{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:85px 20px 30px;text-align:center;opacity:0;pointer-events:none;transition:opacity 1.5s}body.party #finale{opacity:1}h2{font-weight:normal;font-size:34px;line-height:1.15;color:#fff4d9;margin:0;text-shadow:0 0 25px #f2ba6666}h2 em{display:block;font-size:42px;color:#ffc2d1;margin-top:12px}.wish{color:#d7e8df;font:italic 18px/1.5 Georgia;max-width:290px;margin:22px 0}#again{pointer-events:auto;border:1px solid #e7ceb780;border-radius:50%;height:48px;width:48px;background:#193338;color:#fff0d4;display:grid;place-items:center}body:not(.party) #again{visibility:hidden}#again svg{width:23px;height:23px;fill:none;stroke:currentColor;stroke-width:1.6}
+.cake{width:190px;height:175px;position:relative;margin:25px 0 0;filter:drop-shadow(0 10px 10px #0004)}.slice{position:absolute;bottom:16px;left:17px;width:155px;height:85px;background:linear-gradient(#fff0d3 0 22%,#df9c89 22% 43%,#f4d193 43% 63%,#df9c89 63% 78%,#f4d193 78%);border-radius:10px 12px 6px 6px;transform:skewY(-5deg);border:2px solid #9b6463}.icing{position:absolute;left:17px;bottom:84px;width:155px;height:24px;background:#ffc0cc;border-radius:50% 50% 25% 25%;transform:skewY(-5deg)}.plate{position:absolute;bottom:7px;left:0;width:190px;height:15px;border-radius:50%;background:#adced0}.candle{position:absolute;left:91px;bottom:103px;width:12px;height:43px;background:#fff8e9;border-radius:3px;box-shadow:inset -3px 0 #dad6d3}.flame{position:absolute;bottom:149px;left:92px;width:10px;height:20px;background:#ffe492;border-radius:60% 40% 50% 50%;box-shadow:0 0 17px #ffbd4d;transform-origin:bottom;animation:flame 1.8s ease-in-out infinite alternate}@keyframes flame{to{transform:rotate(7deg) scaleX(.88)}}
+@media(max-height:680px){#paper-scene{padding-top:78px}.paper{padding:20px}label{min-height:53px;font-size:16px}.stamp{margin-bottom:10px}h2{font-size:28px}h2 em{font-size:34px}.cake{margin-top:10px;transform:scale(.8);height:145px}.wish{margin:12px 0}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important}.paper{transform:none}}
+</style>
+<style>
+@font-face{font-family:Hand;src:url('./fonts/hand.ttf') format('truetype');font-display:swap}
+@font-face{font-family:Party;src:url('./fonts/party.ttf') format('truetype');font-display:swap}
+label{font:24px/1.2 Hand,cursive;min-height:68px}label:nth-of-type(even) span{transform:rotate(.6deg)}
+h1{font:30px/1.1 Hand,cursive}.signature,#nudge,.wish{font-family:Hand,cursive;font-style:normal;font-size:22px}
+.paper:before{content:'';position:absolute;top:-15px;left:38%;width:95px;height:30px;background:#e7b7bdba;transform:rotate(7deg);border-left:2px dotted #fff6;border-right:2px dotted #fff6}
+#oops{font:35px/1.1 Hand,cursive}#oops small{font:23px/1.3 Hand,cursive;max-width:270px}
+h2{font:40px/1.05 Party,system-ui;max-width:600px;text-shadow:0 4px #bd586e,0 8px 20px #0008;transform:rotate(-3deg)}h2 em{font:inherit;font-size:46px;font-style:normal;color:#ffe291;overflow-wrap:anywhere;margin-top:15px;text-shadow:0 4px #b37544,0 8px 20px #0008}
+.wish{margin-top:35px;max-width:310px}body.party h2{animation:hooray .85s cubic-bezier(.2,.8,.3,1.2) both}@keyframes hooray{from{opacity:0;transform:translateY(30px) rotate(-7deg) scale(.8)}to{opacity:1;transform:translateY(0) rotate(-3deg) scale(1)}}
+#cake-flight{position:fixed;left:0;top:0;z-index:3;pointer-events:none;opacity:0;width:190px;height:175px;will-change:transform}.cake{margin:0;transform:scale(.65);transform-origin:center}.plate{display:none}.slice{clip-path:polygon(0 10%,78% 0,100% 90%,4% 100%)}.icing{clip-path:polygon(0 20%,76% 0,100% 65%,4% 100%)}
+#cake-flight:before{content:'';position:absolute;right:110px;top:100px;width:120px;height:3px;background:#ffd68a;box-shadow:-20px -14px #ffc5d1,-45px 14px #93ded0;opacity:.6;transform:rotate(-5deg)}
+#cake-caption{position:fixed;left:18px;right:18px;bottom:30px;text-align:center;color:#ffe4bd;font:22px Hand,cursive;opacity:0;pointer-events:none;transition:opacity .4s}
+@media(min-width:700px){h2{font-size:58px}h2 em{font-size:72px}}
+@media(max-height:680px){label{font-size:21px;min-height:56px}h2{font-size:32px}h2 em{font-size:39px}.wish{font-size:20px}}
+@media(prefers-reduced-motion:reduce){#cake-flight:before{display:none}}
+</style>
+</head>
+<style>
+@font-face{font-family:Marker;src:url('./fonts/marker.ttf') format('truetype');font-display:swap}
+body.depart{overflow:hidden}#finale{padding:85px 24px 135px;overflow-y:auto;justify-content:center}
+h2{font:36px/1.15 Marker,cursive;letter-spacing:0;max-width:640px;text-shadow:0 3px #a3516b,0 8px 24px #0009}h2 em{font:inherit;font-size:40px;color:#ffe291;letter-spacing:0}h2 span{display:inline-block}h2 span:nth-child(2){color:#9de6d8;transform:rotate(3deg)}h2 em{transform:rotate(3deg)}
+.wish{min-height:132px;margin:27px 0 12px;max-width:360px;font:23px/1.35 Hand,cursive;white-space:pre-line;text-wrap:pretty}.wish small{font:inherit;color:#ffcada}#again{flex-shrink:0}
+#playthings{position:fixed;z-index:4;bottom:max(18px,env(safe-area-inset-bottom));left:18px;right:18px;display:flex;justify-content:center;flex-wrap:wrap;gap:9px;opacity:0;pointer-events:none;transition:opacity .7s}body.toys #playthings{opacity:1;pointer-events:auto}#playthings button{font:18px Hand,cursive;padding:9px 15px;min-height:44px;border:1px dashed #e2cfa78a;border-radius:6px;background:#122a31;color:#fff0d3;box-shadow:0 3px #0003}#playthings button:first-child{background:#f3b9ca;color:#492638;transform:rotate(-3deg)}
+#gag-dialog{width:min(90%,390px);max-height:80svh;overflow:auto;padding:32px 25px;border:1px solid #d2ab77;border-radius:8px;background:#fff5df;color:#304149;text-align:center;box-shadow:0 20px 80px #0008;font:25px/1.35 Hand,cursive}#gag-dialog::backdrop{background:#020914bd}#gag-dialog p{white-space:pre-line;margin:15px 0}#gag-dialog button{min-height:44px;padding:8px 23px;font:20px Hand,cursive;border:1px solid #b27d81;border-radius:5px;background:#f5c8d0;color:#422d37}#gag-dialog .seal{display:inline-block;border:3px double #b34c65;padding:8px 15px;color:#b34c65;font:18px Marker,cursive;transform:rotate(-9deg);margin:8px 0 20px}#hug-meter{width:100%;height:14px;accent-color:#b57489}#hug-number{font:35px Marker,cursive;color:#aa637f}
+#intruder{position:fixed;z-index:6;top:32%;left:calc(50% - 43px);width:86px;height:110px;background:#f4b5ce;border:0;border-radius:50%;box-shadow:inset -9px -7px #d983aa;color:#412e4e;opacity:0;pointer-events:none;transition:transform .8s,opacity .4s}#intruder.show{opacity:1;pointer-events:auto;transform:rotate(8deg)}#intruder:before{content:'';position:absolute;left:27px;top:33px;width:5px;height:9px;background:#533748;border-radius:50%;box-shadow:26px 0 #533748}#intruder:after{content:'';position:absolute;left:35px;top:52px;width:20px;height:12px;border-bottom:2px solid #533748;border-radius:50%}.balloon-string{position:absolute;top:108px;left:43px;width:1px;height:65px;background:#e5cfb8}.balloon-quote{position:absolute;top:-58px;left:-83px;width:250px;font:21px/1.1 Hand,cursive;color:#ffefd9;text-shadow:0 2px 8px #000}.balloon-string:after{content:'';position:absolute;top:-5px;left:-4px;border-left:5px solid transparent;border-right:5px solid transparent;border-bottom:8px solid #da87a8}
+#walking-rocket{position:fixed;bottom:115px;left:-70px;z-index:3;width:30px;height:52px;background:#ffe6c1;border-radius:50% 50% 3px 3px;opacity:0;border-top:15px solid #ea91ac;pointer-events:none}#walking-rocket:before{content:'··';position:absolute;top:0;left:8px;font:bold 22px Georgia;color:#283840}#walking-rocket:after{content:'';position:absolute;top:35px;left:4px;width:5px;height:14px;background:#d8c8bd;box-shadow:17px 0 #d8c8bd;transform:rotate(-20deg)}#walking-rocket span{position:absolute;bottom:70px;left:-60px;width:210px;text-align:center;font:22px Hand,cursive;color:#ffe5bf}#walking-rocket.walk:after{animation:feet .23s infinite alternate}@keyframes feet{to{transform:rotate(20deg)}}
+#cake-caption{bottom:125px;font-size:21px}
+@media(min-width:700px){h2{font-size:51px}h2 em{font-size:65px}.wish{font-size:26px;max-width:440px}}
+@media(max-height:690px){#finale{padding-top:78px;padding-bottom:120px}h2{font-size:29px}h2 em{font-size:33px}.wish{font-size:20px;min-height:115px;margin-top:15px}#playthings{gap:6px}#playthings button{padding:6px 11px;font-size:17px}}
+</style>
+<body>
+<canvas id="sky" aria-hidden="true"></canvas>
+<main id="paper-scene"><section class="paper" aria-labelledby="mission"><header class="stamp"><small>ÚLTIMO CAPÍTULO · XXIII</small><h1 id="mission">MISIÓN: CUMPLEAÑOS</h1></header>
+<label><input type="checkbox"><span>Despertar siendo un año más increíble</span></label>
+<label><input type="checkbox"><span>Sonreír aunque te hagas la difícil</span></label>
+<label><input type="checkbox"><span>Aceptar que hoy tienes prohibido estar triste</span></label>
+<label><input type="checkbox"><span>Abrazar a Nico</span></label>
+<label><input type="checkbox"><span>Soportar cariñosamente a tu familia hoy</span></label>
+<label><input type="checkbox"><span>Tachar esto y actuar sorprendida</span></label>
+<p class="signature">Con cariño, y un poquito de trampa.</p></section></main>
+<aside id="nudge" role="status" hidden><span class="face" aria-hidden="true"></span><span>Debes tachar todo, jsjs.<br>Aquí no se vale hacer trampa.</span></aside>
+<div id="oops" role="status">¿Pum…?<small>Un momentito.<br>Este cohete venía sin ganas.</small></div>
+<section id="finale" aria-hidden="true"><h2>feliz cumpleaños<em>Blanquitaaaa</em></h2><div class="cake" role="img" aria-label="Un pedacito de pastel rosado con una vela encendida"><i class="plate"></i><i class="slice"></i><i class="icing"></i><i class="candle"></i><i class="flame"></i></div><p class="wish" aria-live="polite"></p><button id="again" hidden aria-label="Repetir la sorpresa" title="Repetir la sorpresa"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10a8 8 0 1 1 1 8M4 4v6h6"/></svg></button></section>
+<script>
+const canvas=document.querySelector('#sky'),ctx=canvas.getContext('2d'),checks=[...document.querySelectorAll('input')],nudge=document.querySelector('#nudge'),oops=document.querySelector('#oops'),finale=document.querySelector('#finale');
+const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+document.querySelector('h2').innerHTML='<span>feliz</span> <span>cumpleaños</span><em>Blanquitaaaa</em>';
+const cakeFlight=document.createElement('div');cakeFlight.id='cake-flight';cakeFlight.append(document.querySelector('.cake'));document.body.append(cakeFlight);
+const cakeCaption=document.createElement('div');cakeCaption.id='cake-caption';cakeCaption.textContent='¡¿QUIÉN LANZÓ EL PASTEL?!';document.body.append(cakeCaption);
+function flyCake(elapsed){
+  const t=elapsed-21;
+  if(t<0){cakeFlight.style.opacity=0;cakeCaption.style.opacity=0;return}
+  if(reduced){cakeFlight.style.opacity=1;cakeFlight.style.transform=`translate(${W-155}px,${H-165}px) scale(.6)`;return}
+  const cycle=Math.floor(t/12),phase=t%12,duration=3.6;
+  cakeCaption.textContent=['wiiii','allá voyyy','permiso jsjs','última vueltaaaa'][cycle]||'';
+  if(cycle>=4){cakeFlight.style.opacity=0;cakeCaption.style.opacity=0;return}
+  if(phase>duration){cakeFlight.style.opacity=0;cakeCaption.style.opacity=phase<5?'1':'0';return}
+  const p=phase/duration,reverse=cycle%2===1;
+  const x=reverse?W+170-p*(W+370):-190+p*(W+370);
+  const y=H*.77-Math.sin(p*Math.PI)*H*.16;
+  cakeFlight.style.opacity=1;cakeFlight.style.transform=`translate(${x}px,${y-80}px) rotate(${(reverse?-1:1)*(p*470-35)}deg)`;
+  cakeCaption.style.opacity=p>.38?'1':'0';
+}
+let host=window.__BLANCA_WORLD__||{visible:true,muted:true,tier:'light',pixelRatio:1},W=0,H=0,time=0,last=0,start=null,nextRocket=0,nudgeUntil=0,failed=false,particles=[],rockets=[],audio;
+const colors=['#ffc2d1','#ffdc83','#8fe5cf','#a9c9ff','#ff977f'];
+function resize(){W=innerWidth;H=innerHeight;const d=Math.min(devicePixelRatio||1,host.pixelRatio||1,1.5);canvas.width=W*d;canvas.height=H*d;ctx.setTransform(d,0,0,d,0,0)}
+resize();addEventListener('resize',resize);addEventListener('blanca:state',e=>{host=e.detail;resize()});
+function chime(){if(host.muted||!host.visible)return;try{audio??=new(window.AudioContext||window.webkitAudioContext)();audio.resume();const t=audio.currentTime;[523,659,784].forEach((f,i)=>{const o=audio.createOscillator(),g=audio.createGain();o.frequency.value=f;g.gain.setValueAtTime(0,t+i*.09);g.gain.linearRampToValueAtTime(.025,t+i*.09+.015);g.gain.exponentialRampToValueAtTime(.001,t+i*.09+.45);o.connect(g);g.connect(audio.destination);o.start(t+i*.09);o.stop(t+i*.09+.5)})}catch{}}
+checks.forEach((check,i)=>check.addEventListener('change',()=>{if(start!==null)return;if(checks.every(c=>c.checked)){nudge.hidden=true;start=time;checks.forEach(c=>c.disabled=true);document.body.classList.add('depart');document.querySelector('#paper-scene').inert=true;chime()}else if(i===5&&check.checked){nudge.hidden=false;nudgeUntil=time+3.8}}));
+function launch(dud=false){rockets.push({x:dud?W*.48:W*(.12+Math.random()*.76),y:H+10,top:H*(.12+Math.random()*.35),v:H*(.35+Math.random()*.15),dud,color:colors[Math.floor(Math.random()*colors.length)]})}
+function burst(r){const n=host.tier==='light'?36:70,max=host.tier==='light'?180:420;for(let i=0;i<n&&particles.length<max;i++){const a=Math.PI*2*i/n,s=40+Math.random()*105;particles.push({x:r.x,y:r.y,vx:Math.cos(a)*s,vy:Math.sin(a)*s,life:1.6+Math.random(),age:0,color:r.color})}}
+function draw(dt,elapsed){ctx.clearRect(0,0,W,H);if(start===null)return;ctx.fillStyle='#050b16';ctx.fillRect(0,0,W,H);
+for(let i=0;i<35;i++){ctx.globalAlpha=.2+Math.sin(i+time*.7)*.12;ctx.fillStyle='#e5e8eb';ctx.fillRect((i*137.3)%W,(i*73.7)%H,1.5,1.5)}ctx.globalAlpha=1;
+if(!reduced){for(const r of rockets){
+if(r.dud){
+ const age=elapsed-1.5,p=Math.min(age/1.5,1);r.x=W*.5+Math.sin(age*13)*Math.min(age*4,10);r.y=H-(H*.69)*Math.sin(p*Math.PI/2);
+ if(age>2.1){r.y=H*.31+(age-2.1)*(age-2.1)*H*.55;r.x+=Math.sin(age*8)*22}
+ ctx.save();ctx.translate(r.x,r.y);ctx.rotate(age>2.1?(age-2.1)*7:Math.sin(age*13)*.15);
+ ctx.fillStyle='#fff0d5';ctx.fillRect(-7,-7,14,25);ctx.fillStyle='#f38ca2';ctx.beginPath();ctx.moveTo(-9,-7);ctx.lineTo(0,-22);ctx.lineTo(9,-7);ctx.fill();ctx.fillStyle='#313d56';ctx.fillRect(-4,0,2,3);ctx.fillRect(2,0,2,3);ctx.beginPath();ctx.arc(0,9,3,0,Math.PI*2);ctx.strokeStyle='#313d56';ctx.stroke();
+ if(age<1.65){ctx.fillStyle='#ffd578';ctx.beginPath();ctx.moveTo(-4,18);ctx.lineTo(0,35+Math.sin(age*40)*7);ctx.lineTo(4,18);ctx.fill()}
+ ctx.restore();if(r.y>H+70)r.dead=true;continue;
+}
+r.y-=r.v*dt;ctx.strokeStyle=r.color;ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(r.x,r.y);ctx.lineTo(r.x,r.y+24);ctx.stroke();if(r.y<=r.top){burst(r);r.dead=true}}rockets=rockets.filter(r=>!r.dead);
+for(const p of particles){p.age+=dt;p.x+=p.vx*dt;p.y+=p.vy*dt;p.vy+=35*dt;p.vx*=Math.pow(.6,dt);ctx.globalAlpha=Math.max(0,1-p.age/p.life);ctx.strokeStyle=p.color;ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(p.x-p.vx*.025,p.y-p.vy*.025);ctx.stroke()}particles=particles.filter(p=>p.age<p.life);ctx.globalAlpha=1;}
+if(elapsed>18){const count=host.tier==='light'?24:48;for(let i=0;i<count;i++){const speed=reduced?0:time;const x=((i+.5)/count*W+Math.sin(speed*.6+i)*16+W)%W,y=((i*.61803398875%1)*(H+40)+speed*(22+i%5*4))%(H+40)-20;ctx.save();ctx.translate(x,y);ctx.rotate(reduced?i:time+i);ctx.fillStyle=colors[i%5];ctx.fillRect(-2,-5,4,10);ctx.restore()}for(let i=0;i<4;i++){const x=i%2?W-22:22,y=reduced?H*.3+i*90:H-((time*22+i*170)%(H+150));ctx.fillStyle=colors[i%5];ctx.beginPath();ctx.ellipse(x,y,18,24,Math.sin(time*.6+i)*.1,0,Math.PI*2);ctx.fill();ctx.strokeStyle='#d3d9d777';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(x,y+24);ctx.bezierCurveTo(x-12,y+48,x+12,y+65,x,y+90);ctx.stroke()}}
+}
+function frame(now){requestAnimationFrame(frame);const dt=Math.min((now-last)/1000||0,.05);last=now;if(document.hidden||host.visible===false)return;time+=dt;if(!nudge.hidden&&time>nudgeUntil)nudge.hidden=true;const e=start===null?0:time-start;flyCake(e);partyStory(e);
+if(start!==null){if(e>1.5&&!failed){failed=true;if(!reduced)launch(true)}if(e>4&&e<17)oops.classList.add('show');else oops.classList.remove('show');if(e>17&&time>nextRocket){nextRocket=time+(host.tier==='light'?.8:.5);if(!reduced)launch()}if(e>18&&!document.body.classList.contains('party')){document.body.classList.add('party');finale.setAttribute('aria-hidden','false');document.querySelector('h2').tabIndex=-1;document.querySelector('h2').focus({preventScroll:true});chime()}}draw(dt,e)}requestAnimationFrame(frame);
+document.querySelector('#again').addEventListener('click',()=>{start=null;failed=false;particles=[];rockets=[];checks.forEach(c=>{c.checked=false;c.disabled=false});document.body.classList.remove('party','depart');document.querySelector('#paper-scene').inert=false;finale.setAttribute('aria-hidden','true');checks[0].focus();});
+</script>
+<nav id="playthings" aria-label="Pequeñas sorpresas" inert>
+<button type="button" data-gag="gift">tu regalito · no tocar</button>
+</nav>
+<style>
+#again{display:grid!important;margin-top:14px}
+body:not(.party) #again{display:none!important}
+#walking-rocket{bottom:125px;transform-origin:center bottom;box-shadow:inset -5px 0 #dabd9d,0 0 14px #ffd89038}
+#walking-rocket span{font-size:16px;width:150px;left:-58px;bottom:65px;text-shadow:0 2px 8px #000}
+#walking-rocket.walk:after{animation-duration:.45s}
+#walking-rocket:before{content:'··';font-size:24px}
+#oops{padding:24px}#oops small{max-width:320px}
+#intruder{top:27%}.balloon-quote{display:none}
+#finale{padding-bottom:110px}
+@media(max-height:690px){#walking-rocket{bottom:75px}#intruder{top:24%}}
+</style>
+<button id="intruder" type="button" aria-label="Apartar el globo entrometido" tabindex="-1"><span class="balloon-quote">yo también quería salir en la foto</span><i class="balloon-string" aria-hidden="true"></i></button>
+<div id="walking-rocket" aria-hidden="true"><span>yo mejor por las escaleras</span></div>
+<dialog id="gag-dialog" aria-label="Una sorpresa para ti"><div id="gag-content" aria-live="polite"></div><button id="close-gag" type="button">bueno jsjs</button></dialog>
+<style>
+.tiny-heart{position:fixed;z-index:12;left:50%;top:55%;width:14px;height:14px;background:var(--heart);transform:rotate(45deg);pointer-events:none;animation:heart-flight 1.8s ease-out both}.tiny-heart:before,.tiny-heart:after{content:'';position:absolute;width:14px;height:14px;border-radius:50%;background:inherit}.tiny-heart:before{left:-7px}.tiny-heart:after{top:-7px}@keyframes heart-flight{from{opacity:1;transform:translate(0,0) rotate(45deg) scale(.2)}to{opacity:0;transform:translate(var(--hx),var(--hy)) rotate(65deg) scale(1)}}
+@media(prefers-reduced-motion:reduce){.tiny-heart{display:none}#walking-rocket.walk:after{animation:none}#intruder{transition:none}}
+</style>
+<script>
+const wish=document.querySelector('.wish'),toys=document.querySelector('#playthings'),intruder=document.querySelector('#intruder'),walker=document.querySelector('#walking-rocket'),dialog=document.querySelector('#gag-dialog'),gagContent=document.querySelector('#gag-content');
+let balloonGone=false,balloonRemovedAt=null,hugStart=null,hugValue=-1,returnButton=null;
+function partyStory(e){
+ let line=e<18?'':e<27?'que nunca te falten motivos para sonreír':e<34?'esta fiesta está un poquito fuera de control jsjs':'quita ese globo\nno me deja concentrarme para decirte algo';
+ const after=balloonRemovedAt===null?null:time-balloonRemovedAt;
+ if(after!==null)line=after<7?'se me olvidó qué iba a decirte\nen fin feliz cumpleaños jsjs':'';
+ if(wish.textContent!==line)wish.textContent=line;
+ wish.style.visibility=line?'visible':'hidden';
+ if(e>4&&e<8)oops.innerHTML='bueno ese era de prueba<small>no lo juzgues está nervioso</small>';
+ else if(e>=8&&e<14)oops.innerHTML='se cambió de transporte<small>dice que así es más seguro</small>';
+ else if(e>=14&&e<17)oops.innerHTML='AHORA SÍ<small>los demás sí hicieron el ensayo</small>';
+ const playing=after!==null&&after>=8;document.body.classList.toggle('toys',playing);toys.inert=!playing;
+ const walk=e>7&&e<14;walker.style.opacity=walk?'1':'0';walker.classList.toggle('walk',walk&&!reduced);
+ if(walk){const p=(e-7)/7;walker.style.left=(reduced?W*.4:W*.16+p*W*.58)+'px';walker.style.transform=`translateY(${reduced?0:-Math.floor(p*6)*9-Math.abs(Math.sin(p*30))*4}px) scale(1.7)`}
+ const balloon=e>=34&&!balloonGone;intruder.classList.toggle('show',balloon);intruder.tabIndex=balloon?0:-1;intruder.style.transform=balloon?'rotate(8deg)':e>=34?'translate(160px,-550px) rotate(40deg)':'translate(-180px,80px) rotate(-18deg)';
+ if(hugStart!==null&&dialog.open){const age=time-hugStart,value=Math.min(99,Math.floor(age/4.5*99));if(value!==hugValue){hugValue=value;document.querySelector('#hug-meter').value=value;document.querySelector('#hug-number').textContent=value+' %'}if(age>6){document.querySelector('#hug-line').textContent='por qué tocaste...\nse eliminó tu regalito :c';hugStart=null}}
+}
+function showerHearts(){if(reduced)return;document.querySelectorAll('.tiny-heart').forEach(el=>el.remove());for(let i=0;i<(host.tier==='light'?12:22);i++){const heart=document.createElement('i');heart.className='tiny-heart';heart.setAttribute('aria-hidden','true');heart.style.setProperty('--heart',colors[i%colors.length]);heart.style.setProperty('--hx',((Math.random()-.5)*Math.min(W,600))+'px');heart.style.setProperty('--hy',(-100-Math.random()*300)+'px');heart.addEventListener('animationend',()=>heart.remove(),{once:true});document.body.append(heart)}}
+function showGag(kind,button){returnButton=button;hugValue=-1;
+ gagContent.innerHTML='<p id="hug-line">cargando tu regalito...</p><progress id="hug-meter" aria-label="Cargando tu regalito" max="100" value="0"></progress><p id="hug-number">0 %</p>';if(!dialog.open)dialog.showModal();hugStart=time;chime();
+}
+toys.addEventListener('click',event=>{const button=event.target.closest('[data-gag]');if(button)showGag(button.dataset.gag,button)});
+intruder.addEventListener('click',()=>{balloonGone=true;balloonRemovedAt=time;intruder.classList.remove('show');intruder.tabIndex=-1;intruder.style.transform='translate(160px,-550px) rotate(40deg)';document.querySelector('h2').focus({preventScroll:true});chime()});
+function closeGag(){dialog.close();hugStart=null;returnButton?.focus({preventScroll:true})}
+document.querySelector('#close-gag').addEventListener('click',closeGag);
+dialog.addEventListener('keydown',event=>{if(event.key==='Escape'){event.preventDefault();event.stopPropagation();closeGag()}});
+document.querySelector('#again').hidden=false;
+document.querySelector('#again').addEventListener('click',()=>{
+ balloonGone=false;balloonRemovedAt=null;hugStart=null;hugValue=-1;nextRocket=0;
+ if(dialog.open)dialog.close();
+ document.body.classList.remove('toys');toys.inert=true;
+ intruder.classList.remove('show');intruder.tabIndex=-1;walker.style.opacity=0;
+ cakeFlight.style.opacity=0;cakeCaption.style.opacity=0;
+ nudge.querySelector('span:last-child').textContent='otra vez? ya te gustó que te celebren eh jsjs';
+ nudge.hidden=false;nudgeUntil=time+4.5;
+});
+checks[5].addEventListener('change',()=>{if(checks[5].checked&&!checks.every(c=>c.checked))nudge.querySelector('span:last-child').innerHTML='Debes tachar todo jsjs.<br>Aquí no se vale hacer trampa.'});
+</script></body></html>

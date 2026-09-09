@@ -1,5 +1,16 @@
 // One entry per imported HTML. Copy the ready-to-fill example from CHAPTERS.md.
 export const htmlChapters = {
+  23: {
+    title: 'Misión: cumpleaños',
+    shortText: 'Una última sorpresa, solo para ti.',
+    html: 'chapters/23/index.html',
+    preview: 'chapters/23/preview.jpg',
+    caption: 'La princesa encontró una última nota. Esta vez, la aventura llevaba su nombre.',
+    paragraphs: [
+      'Había recorrido tantos caminos que casi olvidó detenerse a celebrar. Pero alguien había preparado una pequeña misión, de esas que se cumplen sonriendo.',
+      'No era el final de su cuento. Era una pausa bonita para recordarle cuánto la quieren, antes de seguir llenando el mundo con su luz.',
+    ],
+  },
   2: {
     title: 'Pasos de luna',
     shortText: 'Hasta la noche encontraba motivos para sonreír.',
