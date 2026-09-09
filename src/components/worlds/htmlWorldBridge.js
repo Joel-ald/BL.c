@@ -99,4 +99,9 @@
   style.textContent = 'html[data-paused="true"] *,html[data-paused="true"] *::before,html[data-paused="true"] *::after{animation-play-state:paused!important}'
   style.textContent += 'button.sound,button[aria-label="Activar sonidos"],button[aria-label="Silenciar sonidos"]{display:none!important}'
   document.head.append(style)
+  style.textContent += ':root{color-scheme:only light!important}'
+  const colorScheme = document.createElement('meta')
+  colorScheme.name = 'color-scheme'
+  colorScheme.content = 'only light'
+  document.head.append(colorScheme)
 })()

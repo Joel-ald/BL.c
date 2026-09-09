@@ -1,10 +1,13 @@
 import MagicSymbol from './MagicSymbol.jsx'
+import { useState } from 'react'
+import { createPortal } from 'react-dom'
 import { LockKeyhole } from 'lucide-react'
 import { toRoman } from '../../data/toRoman.js'
 
 const materials = ['storybook']
 const accents = ['#f3b947', '#ffd66d', '#e9a83a', '#f7c85a']
 function Book({ book, disabled, selected, visited, onSelect, onPreview, presentation = 'spine' }) {
+  const [secret, setSecret] = useState(0)
   const material = materials[(book.id - 1) % materials.length]
   const lightCover = book.color.toLowerCase().startsWith('#f')
   const style = {
@@ -20,10 +23,10 @@ function Book({ book, disabled, selected, visited, onSelect, onPreview, presenta
       className={`book book--${material} ${lightCover ? 'book--light' : ''} ${book.special ? 'book--special book--special-spine' : ''} ${presentation === 'flat' ? 'book--flat' : ''} ${presentation === 'horizontal' ? 'book--horizontal' : ''} ${selected ? 'book--selected' : ''}`}
       type="button"
       style={style}
-      onClick={() => onSelect(book)}
+      onClick={() => book.unlocked ? onSelect(book) : setSecret(value => value + 1)}
       onFocus={() => !disabled && onPreview?.(book)}
       onPointerEnter={() => !disabled && onPreview?.(book)}
-      disabled={disabled || !book.unlocked}
+      disabled={disabled}
       aria-label={`${book.unlocked ? 'Abrir' : 'Sellado'} libro ${book.id}: ${book.title}`}
       aria-pressed={selected}
       aria-describedby={visited ? `visited-book-${book.id}` : undefined}
@@ -32,6 +35,7 @@ function Book({ book, disabled, selected, visited, onSelect, onPreview, presenta
       <span className="book__pages" aria-hidden="true">
         <i />
       </span>
+      {!book.unlocked && secret > 0 && createPortal(<span key={secret} className="book__secret" role="status">Descubre el secreto</span>, document.body)}
       <span className="book__face">
         <span className="book__headband" aria-hidden="true" />
         <span className="book__rib book__rib--one" aria-hidden="true" />
