@@ -1,0 +1,28 @@
+{
+  "name": "cumpleanos-blanca",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "lint": "oxlint",
+    "test": "node --test src/performance/quality.test.js src/data/bookChapters.test.js src/data/visitedChapters.test.js src/data/htmlChapterConfig.test.js src/hooks/portalSound.test.js src/components/worlds/galaxyEngine.test.js src/components/worlds/htmlWorldBridge.test.js",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "gsap": "^3.15.0",
+    "lucide-react": "^1.41.0",
+    "matter-js": "^0.20.0",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "three": "^0.185.1"
+  },
+  "devDependencies": {
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.4",
+    "@vitejs/plugin-react": "^6.1.0",
+    "oxlint": "^1.79.0",
+    "vite": "^8.2.2"
+  }
+}

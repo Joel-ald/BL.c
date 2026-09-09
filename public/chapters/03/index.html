@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#000000">
+<title>El jardín secreto</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#000}
+.scene{position:absolute;left:50%;top:50%;width:min(100vw,141.4svh);aspect-ratio:3508/2481;transform:translate(-50%,-50%);overflow:hidden;clip-path:inset(3px);background:#000;filter:sepia(100%) hue-rotate(100deg) saturate(50%);touch-action:none}
+.scene::before{content:'';position:absolute;inset:4px;background:#eff7ee}
+.scene img{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;user-select:none;transform:scale(1.055);transform-origin:center}
+.scene .rays{mix-blend-mode:color-dodge;opacity:.8}
+.scene::after{content:'';position:absolute;inset:0;border:2px solid #000;pointer-events:none}
+@media(max-aspect-ratio:3/4){.scene{width:min(125vw,120svh)}}
+@media(prefers-reduced-motion:reduce){.scene img{transform:none}}
+</style>
+</head>
+<body>
+<!-- Dinosaur layers: Christian Alder's supplied Parallax Layers example. See CREDITS.md. -->
+<main class="scene" role="img" aria-label="Un bosque prehistórico de capas verdes, con dinosaurios entre árboles, un río y rayos de sol.">
+<img src="assets/dino-layer10.svg" alt="" data-depth="1">
+<img src="assets/dino-layer9.svg" alt="" data-depth=".9">
+<img src="assets/dino-layer8.svg" alt="" data-depth=".8">
+<img src="assets/dino-layer7.svg" alt="" data-depth=".7">
+<img src="assets/dino-layer6.3.svg" alt="" data-depth=".6">
+<img src="assets/dino-layer6.2.svg" alt="" data-depth=".6">
+<img src="assets/dino-layer6.1.svg" alt="" data-depth=".6">
+<img src="assets/dino-layer5.svg" alt="" data-depth=".5">
+<img src="assets/dino-layer4.2.svg" alt="" data-depth=".4">
+<img src="assets/dino-layer4.1.svg" alt="" data-depth=".4">
+<img src="assets/godrays.png" alt="" data-depth=".2" class="rays">
+<img src="assets/dino-layer3.svg" alt="" data-depth=".2">
+<img src="assets/dino-layer2.svg" alt="" data-depth=".1">
+<img src="assets/dino-layer1.svg" alt="" data-depth="0">
+</main>
+<script>
+'use strict';
+const scene=document.querySelector('.scene');
+const layers=[...scene.querySelectorAll('img')].map(image=>({image,depth:Number(image.dataset.depth)}));
+const reduced=matchMedia('(prefers-reduced-motion:reduce)');
+let frame=0,last=0,age=0,x=0,y=0,tx=0,ty=0;
+function draw(now){
+ frame=0;
+ if(document.hidden||window.__BLANCA_WORLD__?.visible===false||reduced.matches)return;
+ const dt=last?Math.min((now-last)/1000,.05):0;last=now;age+=dt;
+ x+=(tx-x)*Math.min(1,dt*2.5);y+=(ty-y)*Math.min(1,dt*2.5);
+ const amplitude=Math.min(scene.clientWidth*.017,18);
+ for(const {image,depth} of layers){
+  const dx=(x*.7+Math.sin(age*.17)*.3)*amplitude*depth;
+  const dy=(y*.55+Math.cos(age*.13)*.25)*amplitude*depth;
+  image.style.transform=`translate(${dx.toFixed(2)}px,${dy.toFixed(2)}px) scale(1.055)`;
+ }
+ frame=requestAnimationFrame(draw);
+}
+function start(){if(!frame&&!reduced.matches&&!document.hidden&&window.__BLANCA_WORLD__?.visible!==false){last=0;frame=requestAnimationFrame(draw)}}
+function stop(){cancelAnimationFrame(frame);frame=0;last=0}
+addEventListener('pointermove',event=>{tx=(event.clientX/innerWidth-.5)*2;ty=(event.clientY/innerHeight-.5)*2});
+addEventListener('pointerout',event=>{if(!event.relatedTarget){tx=ty=0}});
+document.addEventListener('visibilitychange',()=>{if(document.hidden)stop();else start()});
+addEventListener('blanca:state',event=>{if(event.detail.visible)start();else stop()});
+reduced.addEventListener('change',()=>{stop();for(const {image} of layers)image.style.transform='';start()});
+Promise.all(layers.map(({image})=>image.decode())).then(start).catch(()=>{throw new Error('No se pudieron cargar las capas del bosque')});
+</script>
+</body>
+</html>

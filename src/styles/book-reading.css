@@ -1,0 +1,125 @@
+.reading-toggle,
+.reading-navigation button {
+  display: grid;
+  width: 44px;
+  height: 44px;
+  flex: 0 0 44px;
+  padding: 0;
+  place-items: center;
+  color: #f7e4b3;
+  border: 1px solid #d5bb7e66;
+  border-radius: 50%;
+  background: #100c18;
+  cursor: pointer;
+}
+
+.reading-toggle {
+  position: absolute;
+  z-index: 35;
+  top: 0.25rem;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.reading-toggle:focus-visible,
+.reading-navigation button:focus-visible { outline: 2px solid #fff0b9; outline-offset: 3px; }
+.reading-navigation button:disabled { opacity: 0.25; cursor: default; }
+
+.book-modal--reading {
+  overflow-x: hidden;
+  overflow-y: auto;
+  align-items: safe center;
+}
+
+.book-modal__panel.is-reading {
+  --reading-width: min(78vw, 21rem);
+  width: min(100%, 64rem);
+  min-height: calc(var(--reading-width) * 1.65 + 14rem);
+  height: max(90dvh, calc(var(--reading-width) * 1.65 + 14rem));
+  max-height: none;
+}
+
+.is-reading .flip-book-stage { overflow: hidden; }
+.is-reading .flip-book {
+  --flip-width: var(--reading-width);
+  top: calc(4rem + var(--reading-width) * 0.825);
+  left: calc(50% + var(--reading-width) * 0.53);
+  height: calc(var(--reading-width) * 1.65);
+  transition: left 480ms ease, transform 720ms ease-in-out;
+}
+.is-reading[data-reading-page="1"] .flip-book { left: calc(50% - var(--reading-width) * 0.53); }
+.is-reading .flip-book.is-open .flip-book__page5 { transform: rotateY(-165deg) scale(1.1); }
+.is-reading .flip-book.is-open .flip-book__page6 { transform: rotateY(-15deg) scale(1.1); }
+.is-reading .flip-book.is-open .flip-book__front { transform: rotateY(-179deg) scale(1.1); }
+.is-reading .flip-book.is-open .flip-book__page1 { transform: rotateY(-176deg) scale(1.1); }
+.is-reading .flip-book.is-open .flip-book__page3 { transform: rotateY(-172deg) scale(1.1); }
+.is-reading .flip-book.is-open .flip-book__page2 { transform: rotateY(-3deg) scale(1.1); }
+.is-reading .flip-book.is-open .flip-book__page4 { transform: rotateY(-8deg) scale(1.1); }
+.is-reading .flip-book.is-open .flip-book__back { transform: rotateY(-1deg) scale(1.1); }
+
+.is-reading .rain-book-page { padding: 8% 7%; }
+.is-reading .story-prose,
+.is-reading .rain-book-page--right .story-prose,
+.is-reading .story-script {
+  width: 100%;
+  font-size: 16px;
+  line-height: 1.6;
+  margin-bottom: 0.85rem;
+}
+.is-reading .story-script { margin-top: 1rem; }
+.is-reading .story-divider { margin-bottom: 1.1rem; }
+.is-reading .story-divider--bottom { margin: auto 0 0; }
+.is-reading .rain-preview { width: 92%; }
+.is-reading .story-page__number { font-size: 12px; }
+
+.reading-navigation {
+  position: absolute;
+  top: calc(var(--reading-width) * 1.815 + 4.5rem);
+  left: 50%;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  transform: translateX(-50%);
+}
+.reading-navigation span { min-width: 3rem; text-align: center; font-size: 14px; color: #eee0c0; }
+.is-reading .flip-book-caption { bottom: 0.7rem; }
+.is-reading .flip-book-caption h2 { font-size: 22px; }
+.is-reading .flip-book-caption p { max-width: 30rem; font-size: 13px; line-height: 1.5; }
+
+.book__visited {
+  position: absolute;
+  z-index: 6;
+  top: -2px;
+  right: 12%;
+  width: 12px;
+  height: 29px;
+  background: linear-gradient(90deg, #722945, #c87885 28%, #a54664 65%, #71304a);
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 82%, 0 100%);
+  box-shadow: inset 1px 0 #f8d69d, inset -1px 0 #e6b972, inset 0 4px 3px #34192b99;
+  pointer-events: none;
+}
+.book__visited-thread {
+  position: absolute;
+  inset: 5px 2px 7px;
+  border-inline: 1px solid #efbf9670;
+}
+.book__visited-seal {
+  position: absolute;
+  top: 13px;
+  left: 4px;
+  width: 4px;
+  height: 6px;
+  background: #ffe3a2;
+  clip-path: polygon(50% 0, 65% 34%, 100% 50%, 65% 66%, 50% 100%, 35% 66%, 0 50%, 35% 34%);
+}
+.book--horizontal .book__visited {
+  top: 8px;
+  right: auto;
+  left: 29px;
+  transform-origin: top left;
+  transform: rotate(90deg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .is-reading .flip-book { transition: none; }
+}

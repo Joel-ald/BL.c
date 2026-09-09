@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#090b1b">
+<title>Luna y su estrella</title>
+<style>
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#090b1b}canvas{display:block;position:fixed;inset:0;width:100%;height:100%}button{position:fixed;width:72px;height:72px;padding:0;transform:translate(-50%,-50%);border:0;border-radius:50%;background:transparent;cursor:pointer;-webkit-tap-highlight-color:transparent;touch-action:manipulation}button:focus-visible{outline:1px solid #ffe5ab88;outline-offset:12px}button:focus:not(:focus-visible){outline:0}
+</style>
+</head>
+<body>
+<canvas id="scene" role="img" aria-label="Una luna de luz suave sonríe y mira a una pequeña estrella dorada debajo de ella. La estrella titila y la luna parpadea de vez en cuando."></canvas>
+<button id="star" aria-label="Hacer brillar la estrella"></button>
+<script>
+'use strict';
+const canvas=document.getElementById('scene'),ctx=canvas.getContext('2d',{alpha:false}),starButton=document.getElementById('star');
+const reduced=matchMedia('(prefers-reduced-motion: reduce)');
+let W=0,H=0,D=1,mx=0,my=0,R=0,sx=0,sy=0,skyCache,moonCache,layers=[],pointer={x:0,y:0,tx:0,ty:0},farStars=[],time=0,last=0,frame=0,nextBlink=3.6,blinkAge=10,extraLight=0,reactionAge=99,gleamAge=99,nextGleam=7.8,affection=0,stillAffection=false,seed=82497;
+function random(){seed=(Math.imul(seed,1664525)+1013904223)>>>0;return seed/4294967296}
+function smooth(t){t=Math.max(0,Math.min(1,t));return t*t*(3-2*t)}
+function pulse(age,attack,hold,release){if(age<attack)return smooth(age/attack);if(age<attack+hold)return 1;return 1-smooth((age-attack-hold)/release)}
+function ellipse(g,x,y,rx,ry,color){g.fillStyle=color;g.beginPath();g.ellipse(x,y,rx,ry,0,0,Math.PI*2);g.fill()}
+function glow(g,x,y,r,stops){const grad=g.createRadialGradient(x,y,0,x,y,r);for(const [pos,color] of stops)grad.addColorStop(pos,color);g.fillStyle=grad;g.fillRect(x-r,y-r,r*2,r*2)}
+function curve(g,points,color,width){g.beginPath();g.moveTo(points[0],points[1]);g.quadraticCurveTo(points[2],points[3],points[4],points[5]);g.strokeStyle=color;g.lineWidth=width;g.lineCap='round';g.stroke()}
+function sparkle(g,x,y,r,alpha,color){g.save();g.globalAlpha=alpha;g.fillStyle=color;g.beginPath();g.moveTo(x,y-r);g.quadraticCurveTo(x+r*.16,y-r*.14,x+r*.60,y);g.quadraticCurveTo(x+r*.16,y+r*.14,x,y+r);g.quadraticCurveTo(x-r*.16,y+r*.14,x-r*.60,y);g.quadraticCurveTo(x-r*.16,y-r*.14,x,y-r);g.fill();g.restore()}
+function buildSky(){
+ seed=82497;layers=[];farStars=[];
+ for(let k=0;k<3;k++){
+  const buffer=document.createElement('canvas');buffer.width=Math.ceil((W+80)*D);buffer.height=Math.ceil((H+80)*D);const g=buffer.getContext('2d');g.scale(D,D);
+  const count=Math.min(6000,Math.floor(W*H/(k===0?950:k===1?2200:6200)));
+  for(let i=0;i<count;i++){
+   const x=random()*(W+80),y=random()*(H+80),n=random(),size=(k===0?.20:k===1?.38:.62)+Math.pow(n,6)*(k===2?1.1:.75);
+   const color=random()<.13?'#c7d8ef':random()<.10?'#ecd1b9':'#e4e5e5';const alpha=.20+random()*(k===0?.55:.72);
+   if(size>1.2)glow(g,x,y,size*5,[[0,'#fff5'],[.13,'#dceaff35'],[1,'#c4ddff00']]);g.globalAlpha=alpha;ellipse(g,x,y,size,size,color);g.globalAlpha=1;
+  }
+  if(k===0)for(let i=0;i<450;i++){const y=random()*(H+80),x=W*.10+y*.62+(random()+random()+random()-1.5)*W*.40;g.globalAlpha=.05+random()*.24;ellipse(g,x,y,.22+random()*.40,.3,'#bfc9d5');g.globalAlpha=1}
+  layers.push(buffer);
+ }
+ const starCount=window.__BLANCA_WORLD__?.tier==='light'?12:window.__BLANCA_WORLD__?.tier==='balanced'?22:32;
+ for(let i=0;i<starCount;i++)farStars.push({x:random()*W,y:random()*H,r:1.+random()*1.6,p:random()*6.28,warm:random()>.72});
+}
+function buildMoon(){
+ const size=760;moonCache=document.createElement('canvas');moonCache.width=moonCache.height=size;const g=moonCache.getContext('2d');g.translate(size/2,size/2);g.scale(size/2-2,size/2-2);
+ g.save();g.beginPath();g.arc(0,0,1,0,Math.PI*2);g.clip();
+ const lavender=g.createLinearGradient(-.6,-1,.5,1);lavender.addColorStop(0,'#ddd8e6');lavender.addColorStop(.6,'#d8d3e1');lavender.addColorStop(1,'#d1cbdc');g.fillStyle=lavender;g.fillRect(-1,-1,2,2);
+ const craters=[[-.16,-.63,.058,.041],[.14,-.43,.12,.115],[-.065,-.30,.052,.052],[-.65,.50,.045,.056],[-.19,.83,.094,.051],[.12,.74,.110,.068]];
+ for(const [x,y,rx,ry] of craters){
+  g.save();g.translate(x,y);g.rotate(-.20);g.shadowBlur=3;g.shadowColor='#b1a7bf38';ellipse(g,0,0,rx,ry,'#bdb6c766');g.shadowBlur=0;
+  g.beginPath();g.ellipse(0,0,rx,ry,0,3.4,5.8);g.strokeStyle='#f6f0ff35';g.lineWidth=.018;g.stroke();g.restore();
+ }
+ glow(g,.35,.95,.55,[[0,'#ffeabb0a'],[1,'#ffeabb00']]);g.restore();
+}
+function resize(){
+ W=innerWidth;H=innerHeight;D=Math.min(devicePixelRatio||1,1.7,window.__BLANCA_WORLD__?.pixelRatio??1.7);canvas.width=Math.round(W*D);canvas.height=Math.round(H*D);ctx.setTransform(D,0,0,D,0,0);
+ R=Math.min(W*.33,H*.245,192);mx=W*.5;my=H*.40;sx=mx+R*.40;sy=Math.min(H*.83,my+R+Math.max(75,R*.43));
+ starButton.style.left=sx+'px';starButton.style.top=sy+'px';buildSky();buildMoon();draw(0);
+}
+function drawEyes(g,openness,light){
+ for(const x of [.23,.58]){
+  const y=.30,angle=Math.atan2(sy-(my+y*R),sx-(mx+x*R));
+  const dx=Math.cos(angle),dy=Math.sin(angle);
+  g.save();g.translate(x,y);
+  if(openness>.08){
+   g.scale(1,openness);
+   // The original little dark eyes, with the pupil aimed at the star.
+   ellipse(g,0,0,.027,.035,'#63556f');
+   g.save();g.beginPath();g.ellipse(0,0,.027,.035,0,0,Math.PI*2);g.clip();
+   ellipse(g,dx*.009,dy*.010,.022,.028,'#302a3b');
+   ellipse(g,dx*.014,dy*.022,.010,.008,'rgba(255,218,154,'+Math.min(.78,.24+light*.25)+')');
+   ellipse(g,dx*.007-.005,dy*.012-.013,.007,.008,'#fff9ef');g.restore();
+   const side=x<.4?-1:1;curve(g,[side*.013,-.018,side*.030,-.026,side*.039,-.045],'#302a3b',.013);
+  }else curve(g,[-.027,0,0,.020,.027,0],'#302a3b',.013);
+  g.restore();
+ }
+}
+function drawMoon(openness,light){
+ glow(ctx,mx,my,R*2.08,[[0,'#e1cbff28'],[.46,'#e4d1ff24'],[.62,'#b99cdb0f'],[1,'#aa8ed000']]);
+ ctx.drawImage(moonCache,mx-R,my-R,R*2,R*2);
+ ctx.save();ctx.translate(mx,my);ctx.scale(R,R);
+ // Reflected light follows the same brightness as the star, and stays on the moon.
+ ctx.save();ctx.beginPath();ctx.arc(0,0,.994,0,Math.PI*2);ctx.clip();
+ const a=Math.atan2(sy-my,sx-mx),lx=Math.cos(a),ly=Math.sin(a),warmth=.055+Math.max(0,light-.72)*.105;
+ glow(ctx,lx*1.04,ly*1.04,.91,[[0,'rgba(255,225,164,'+warmth+')'],[.44,'rgba(255,232,187,'+(warmth*.65)+')'],[1,'#ffe8bb00']]);
+ const rim=ctx.createLinearGradient(lx*.45,ly*.45,lx,ly);rim.addColorStop(0,'#ffedc000');rim.addColorStop(1,'rgba(255,235,185,'+(warmth*.90)+')');ctx.strokeStyle=rim;ctx.lineWidth=.018;ctx.beginPath();ctx.arc(0,0,.986,a-.70,a+.70);ctx.stroke();ctx.restore();
+ ellipse(ctx,.16,.41,.069,.031,'#f79db4');ellipse(ctx,.65,.41,.069,.031,'#f79db4');
+ if(affection>.01){glow(ctx,.16,.41,.10,[[0,'rgba(255,161,185,'+(affection*.19)+')'],[1,'#ffa1b900']]);glow(ctx,.65,.41,.10,[[0,'rgba(255,161,185,'+(affection*.19)+')'],[1,'#ffa1b900']])}
+ curve(ctx,[.345-affection*.009,.347-affection*.006,.405,.449+affection*.022,.466+affection*.009,.345-affection*.006],'#302a3b',.020);
+ drawEyes(ctx,openness,light);ctx.restore();
+}
+function drawStar(light){
+ const size=Math.min(32,Math.max(25,R*.17));
+ const breathe=reduced.matches?1:1+Math.sin(time*1.4)*.012;
+ const intensity=Math.min(1.65,light),glint=reduced.matches?0:pulse(gleamAge,.65,.08,1.6);
+ // A soft, transparent halo leaves the shape crisp and the sky visible.
+ glow(ctx,sx,sy,size*3.9,[[0,'rgba(255,235,189,'+(.16*intensity)+')'],[.20,'rgba(255,220,160,'+(.085*intensity)+')'],[.50,'rgba(235,193,144,'+(.027*intensity)+')'],[1,'#ebc19000']]);
+ glow(ctx,sx,sy,size*1.25,[[0,'rgba(255,250,229,'+(.66*intensity)+')'],[.18,'rgba(255,235,192,'+(.26*intensity)+')'],[.56,'#ffe6b811'],[1,'#ffe6b800']]);
+ ctx.save();ctx.translate(sx,sy);ctx.scale(breathe,breathe);
+ // Four tapered petals meet in one luminous body, rather than nested diamonds.
+ function outline(r){
+  ctx.beginPath();ctx.moveTo(0,-r);
+  ctx.bezierCurveTo(r*.10,-r*.28,r*.20,-r*.12,r*.83,0);
+  ctx.bezierCurveTo(r*.20,r*.10,r*.10,r*.28,0,r);
+  ctx.bezierCurveTo(-r*.10,r*.28,-r*.20,r*.10,-r*.83,0);
+  ctx.bezierCurveTo(-r*.20,-r*.12,-r*.10,-r*.28,0,-r);ctx.closePath();
+ }
+ const gold=ctx.createLinearGradient(-size*.35,-size,size*.35,size);
+ gold.addColorStop(0,'#fff9e5');gold.addColorStop(.32,'#fffdf5');gold.addColorStop(.53,'#fff7d9');gold.addColorStop(1,'#f5d194');
+ outline(size);ctx.fillStyle=gold;ctx.shadowColor='rgba(255,236,190,'+(.60*intensity)+')';ctx.shadowBlur=8*D;ctx.fill();ctx.shadowBlur=0;
+ // Small white heart; no hard interior border or long vertical streak.
+ glow(ctx,0,0,size*.37,[[0,'#ffffff'],[.20,'#fffef8f5'],[.62,'#fffdf28c'],[1,'#fffdf200']]);
+ ctx.save();ctx.rotate(Math.PI/4);ctx.globalAlpha=.09+glint*.09+extraLight*.055;outline(size*.72);ctx.fillStyle='#fff4d9';ctx.fill();ctx.restore();
+ // Fleeting pinpricks shimmer close to the tips, always softer than the center.
+ if(!reduced.matches){
+  const twinkle=(phase)=>Math.pow(Math.max(0,Math.sin(time*.83+phase)),5);
+  sparkle(ctx,size*.98,-size*.51,2.1,twinkle(.4)*.44,'#fff2cc');
+  sparkle(ctx,-size*.90,size*.68,1.7,twinkle(3.5)*.32,'#ffe4b4');
+ }
+ ctx.restore();
+}
+function draw(dt){
+ time+=dt;reactionAge+=dt;gleamAge+=dt;
+ if(!reduced.matches&&time>=nextGleam){gleamAge=0;nextGleam=time+9+random()*7}
+ if(!reduced.matches&&time>=nextBlink){blinkAge=0;nextBlink=time+5.5+random()*5}
+ blinkAge+=dt;let openness=1;
+ if(!reduced.matches&&blinkAge<.38){if(blinkAge<.075)openness=1-smooth(blinkAge/.075);else if(blinkAge<.115)openness=0;else openness=smooth((blinkAge-.115)/.265)}
+ extraLight=reduced.matches?(stillAffection?.55:0):pulse(reactionAge,.30,.12,2.8);
+ affection=reduced.matches?(stillAffection?.7:0):pulse(Math.max(0,reactionAge-.15),.50,.65,2.5);
+ const special=reduced.matches?0:pulse(gleamAge,.85,.1,2.2);
+ const light=reduced.matches?1+extraLight*.35:.99+.095*Math.sin(time*1.57)+.047*Math.sin(time*2.37+.6)+.025*Math.sin(time*.61+2)+special*.22+extraLight*.40;
+ if(reduced.matches){pointer.x=pointer.y=0}else{pointer.x+=(pointer.tx-pointer.x)*Math.min(1,dt*2);pointer.y+=(pointer.ty-pointer.y)*Math.min(1,dt*2)}
+ ctx.fillStyle='#090b1b';ctx.fillRect(0,0,W,H);glow(ctx,W*.5,H*.475,Math.min(W,H)*.80,[[0,'#56447655'],[.40,'#26254744'],[1,'#00000000']]);
+ for(let k=0;k<layers.length;k++){const drift=reduced.matches?0:Math.sin(time*.025+k)*3;ctx.globalAlpha=k===0?.75:1;ctx.drawImage(layers[k],0,0,layers[k].width,layers[k].height,-40+pointer.x*(k+1)*4+drift,-40+pointer.y*(k+1)*4,W+80,H+80)}ctx.globalAlpha=1;
+ for(const s of farStars){const alpha=.58+(reduced.matches?.20:Math.sin(time*.65+s.p)*.22),x=s.x+pointer.x*15,y=s.y+pointer.y*15;const color=s.warm?'255,207,163':'199,219,249';glow(ctx,x,y,s.r*9,[[0,'rgba('+color+','+(alpha*.45)+')'],[.15,'rgba('+color+','+(alpha*.10)+')'],[1,'rgba('+color+',0)']]);sparkle(ctx,x,y,s.r*4,alpha*.85,s.warm?'#ffcfaa':'#c7dbf9')}
+ ctx.save();ctx.translate(pointer.x*3,pointer.y*3);drawMoon(openness,light);drawStar(light);ctx.restore();starButton.style.left=(sx+pointer.x*3)+'px';starButton.style.top=(sy+pointer.y*3)+'px';
+}
+function tick(now){frame=0;if(document.hidden)return;const dt=last?Math.min(.05,(now-last)/1000):0;last=now;draw(dt);if(!reduced.matches)frame=requestAnimationFrame(tick)}
+function start(){if(!frame&&!document.hidden){last=0;frame=requestAnimationFrame(tick)}}
+starButton.addEventListener('click',()=>{if(reduced.matches){stillAffection=!stillAffection;draw(0);return}reactionAge=0;nextBlink=time+.72;start()});
+document.addEventListener('visibilitychange',()=>{if(document.hidden){cancelAnimationFrame(frame);frame=0}else start()});
+reduced.addEventListener('change',()=>{cancelAnimationFrame(frame);frame=0;start()});
+addEventListener('pointermove',e=>{if(reduced.matches)return;pointer.tx=e.clientX/W-.5;pointer.ty=e.clientY/H-.5});
+addEventListener('pointerout',e=>{if(!e.relatedTarget){pointer.tx=pointer.ty=0}});
+let resizeTimer;addEventListener('resize',()=>{clearTimeout(resizeTimer);resizeTimer=setTimeout(resize,90)});
+let qualityTier=window.__BLANCA_WORLD__?.tier;
+addEventListener('blanca:state',e=>{if(e.detail.tier!==qualityTier){qualityTier=e.detail.tier;clearTimeout(resizeTimer);resizeTimer=setTimeout(resize,90)}});
+resize();start();
+</script>
+</body>
+</html>

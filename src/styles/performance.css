@@ -1,0 +1,56 @@
+:root[data-quality="light"] .rain-drop,
+:root[data-quality="balanced"] .rain-drop {
+  filter: none;
+  will-change: auto;
+}
+
+:root[data-quality="light"] .storm-haze {
+  animation: none;
+  filter: blur(1rem);
+}
+
+:root[data-quality="light"] .book-modal {
+  backdrop-filter: none;
+  background: rgba(8, 6, 15, 0.94);
+}
+
+:root[data-quality="balanced"] .book-modal {
+  backdrop-filter: blur(5px);
+}
+
+:root[data-quality="light"] .icon-button,
+:root[data-quality="light"] .rain-world__back {
+  backdrop-filter: none;
+}
+
+:root[data-quality="light"] .book {
+  will-change: auto;
+}
+
+:root[data-quality="light"] .book-slot,
+:root[data-quality="light"] .bookcase__crown i,
+:root[data-quality="light"] .bookcase__underlight,
+:root[data-quality="light"] .book--light .book__face::after {
+  animation: none;
+}
+
+:root[data-quality="light"] .heat-haze {
+  display: none;
+}
+
+:root[data-quality="light"] .rain-written__character {
+  filter: none;
+}
+
+/* Keep the shelf still while it is covered, including decorative pseudo-elements. */
+.library-stage[data-paused="true"] *,
+.library-stage[data-paused="true"] *::before,
+.library-stage[data-paused="true"] *::after,
+.library-stage:not(.is-visible) *,
+.library-stage:not(.is-visible) *::before,
+.library-stage:not(.is-visible) *::after,
+:root[data-page-visibility="hidden"] *,
+:root[data-page-visibility="hidden"] *::before,
+:root[data-page-visibility="hidden"] *::after {
+  animation-play-state: paused !important;
+}
