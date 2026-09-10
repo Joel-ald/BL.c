@@ -53,6 +53,7 @@ function Book({ book, disabled, selected, visited, onSelect, onPreview, presenta
   return (
     <button
       ref={bookRef}
+      data-book-id={book.id}
       className={`book book--${material} ${lightCover ? 'book--light' : ''} ${book.special ? 'book--special book--special-spine' : ''} ${presentation === 'flat' ? 'book--flat' : ''} ${presentation === 'horizontal' ? 'book--horizontal' : ''} ${selected ? 'book--selected' : ''}`}
       type="button"
       style={style}

@@ -1,12 +1,18 @@
 import birthdayColors from './birthdayColors.js'
 
-function SignLetter({ character, color, index, white = false }) {
+function SignLetter({ character, color, index, white = false, onPick, lit, disabled }) {
   if (character === ' ') {
     return <span className="library-sign__space" aria-hidden="true" />
   }
 
+  const Tag = onPick ? 'button' : 'span'
   return (
-    <span
+    <Tag
+      type={onPick ? 'button' : undefined}
+      onClick={onPick}
+      disabled={onPick ? disabled : undefined}
+      aria-label={onPick ? `Letra ${character}, posición ${index - 13}` : undefined}
+      data-key-lit={lit || undefined}
       className={'library-sign__rig' + (white ? ' library-sign__rig--white' : '')}
       style={{
         '--sign-color': color,
@@ -15,16 +21,16 @@ function SignLetter({ character, color, index, white = false }) {
     >
       <i aria-hidden="true" />
       <b>{character}</b>
-    </span>
+    </Tag>
   )
 }
 
-function BirthdaySign() {
+function BirthdaySign({ onFairyLetter, fairyProgress = 0, ready = true }) {
   const title = [...'Happy Birthday']
   const name = [...'BLANCA']
 
   return (
-    <div className="birthday-sign" role="img" aria-label="Happy Birthday Blanca">
+    <div className="birthday-sign" role={onFairyLetter ? 'group' : 'img'} aria-label="Happy Birthday Blanca">
       <div className="library-sign__line library-sign__line--birthday" aria-hidden="true">
         {title.map((character, index) => (
           <SignLetter
@@ -35,7 +41,7 @@ function BirthdaySign() {
           />
         ))}
       </div>
-      <div className="library-sign__line library-sign__line--name" aria-hidden="true">
+      <div className="library-sign__line library-sign__line--name" aria-hidden={onFairyLetter ? undefined : true}>
         {name.map((character, index) => (
           <SignLetter
             key={character + '-' + index}
@@ -43,6 +49,9 @@ function BirthdaySign() {
             color="#fffaf0"
             index={index + title.length}
             white
+            onPick={onFairyLetter ? event => onFairyLetter(index, event.currentTarget) : undefined}
+            lit={index < fairyProgress}
+            disabled={!ready}
           />
         ))}
       </div>

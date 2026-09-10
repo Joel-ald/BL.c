@@ -74,7 +74,7 @@ function Bookcase({ label, rows, ready, selectedBookId, onSelectBook, onPreviewB
   )
 }
 
-function LibraryScene({ books, ready, selectedBookId, onSelectBook, onPreviewBook, visited }) {
+function LibraryScene({ books, ready, selectedBookId, onSelectBook, onPreviewBook, visited, onFairyLetter, fairyProgress }) {
   const { profile } = useExperienceQuality()
   const rows = [
     books.slice(0, 6),
@@ -126,7 +126,7 @@ function LibraryScene({ books, ready, selectedBookId, onSelectBook, onPreviewBoo
 
       <div className="library-grid">
         <div className="ceremony-space">
-          <BirthdaySign />
+          <BirthdaySign onFairyLetter={onFairyLetter} fairyProgress={fairyProgress} ready={ready && !selectedBookId} />
         </div>
 
         <Bookcase

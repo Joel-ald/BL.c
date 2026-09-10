@@ -3,6 +3,7 @@ import BookModal from './components/library/BookModal.jsx'
 import LibraryScene from './components/library/LibraryScene.jsx'
 import IntroScene from './components/intro/IntroScene.jsx'
 import books from './data/books.js'
+import { nextFairyLetter, readFairyKey, saveFairyKey } from './data/fairyKey.js'
 import useMagicSound from './hooks/useMagicSound.js'
 import useVisitedChapters from './hooks/useVisitedChapters.js'
 import { useExperienceQuality } from './performance/useExperienceQuality.js'
@@ -14,6 +15,9 @@ function App() {
   const [libraryVisible, setLibraryVisible] = useState(false)
   const [libraryReady, setLibraryReady] = useState(false)
   const [selectedBook, setSelectedBook] = useState(null)
+  const [fairyOpen, setFairyOpen] = useState(() => { try { return readFairyKey(window.localStorage) } catch { return false } })
+  const [fairyProgress, setFairyProgress] = useState(0)
+  const [fairyFlight, setFairyFlight] = useState(null)
   const { visited, markVisited } = useVisitedChapters()
   const {
     muted,
@@ -27,6 +31,30 @@ function App() {
     toggleMuted,
     unlockAudio,
   } = useMagicSound()
+
+  useEffect(() => {
+    if (!fairyFlight) return
+    const timer = setTimeout(() => {
+      setFairyOpen(true)
+      try { saveFairyKey(window.localStorage) } catch { /* Storage can be unavailable. */ }
+      setFairyFlight(null)
+      document.querySelector('[data-book-id="9"]')?.focus({ preventScroll: true })
+    }, reducedMotion ? 200 : 2800)
+    return () => clearTimeout(timer)
+  }, [fairyFlight, reducedMotion])
+
+  const pickFairyLetter = (index, element) => {
+    if (!libraryReady || selectedBook || fairyOpen || fairyFlight) return
+    const next = nextFairyLetter(fairyProgress, index)
+    setFairyProgress(next)
+    if (next !== fairyProgress) playBookHover({ id: 100 + index, special: false })
+    if (next === 6) {
+      const from = element.getBoundingClientRect()
+      const to = document.querySelector('[data-book-id="9"]')?.getBoundingClientRect() ?? from
+      setFairyFlight({ '--from-x': `${from.left - 40}px`, '--from-y': `${from.top - 70}px`, '--to-x': `${Math.max(0, Math.min(innerWidth - 100, to.left - 30))}px`, '--to-y': `${Math.max(80, Math.min(innerHeight - 120, to.top - 70))}px` })
+      playPortal('enter')
+    }
+  }
 
   useEffect(() => {
     if (!libraryReady) {
@@ -116,7 +144,9 @@ function App() {
         data-paused={Boolean(selectedBook)}
       >
         {libraryVisible && <LibraryScene
-          books={books}
+          books={books.map(book => book.id === 9 ? { ...book, unlocked: fairyOpen } : book)}
+          onFairyLetter={pickFairyLetter}
+          fairyProgress={fairyOpen ? 6 : fairyProgress}
           ready={libraryReady}
           selectedBookId={selectedBook?.id ?? null}
           visited={visited}
@@ -168,6 +198,8 @@ function App() {
           onToggleMuted={toggleMuted}
         />
       )}
+      {fairyFlight && <div className="fairy-key-flight" style={fairyFlight} aria-hidden="true"><img src={`${import.meta.env.BASE_URL}chapters/09/fairy.svg`} alt="" /><span /></div>}
+      <span className="sr-only" role="status">{fairyOpen ? 'El libro IX está abierto.' : fairyProgress ? `${fairyProgress} letras encendidas.` : ''}</span>
     </main>
   )
 }

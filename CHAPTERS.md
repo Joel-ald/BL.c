@@ -1,5 +1,13 @@
 # Adding a chapter
 
+## Book IX: fairy key
+
+IX uses `public/chapters/09/index.html`, an original local fairy SVG and a real
+scene preview. Tap the six BLANCA letters in order to unlock it; the two As are
+separate positions. `fairyKey.js` persists the completed key locally, with an
+in-memory fallback. The scene opens a nine-petal flower with nine readable wishes.
+Canvas resolution, particle count and frame rate adapt to the shared profile.
+
 All books use the same real page5/page6 surfaces, caption placement and portal.
 The current active worlds are I (galaxy), II (moon), III (dinosaur forest), IV (four wishes), V (crystal lab), VI (invisible map), X (a lovely reaction), XI (paper voyage), XIII (violet door), XVII (a little warmth), XIX (day/night house), and XXI (tic-tac-toe). VII has no scene assigned. The former VI light scene and its preview are preserved in archive/chapters/la-luz-que-llevas. The native rain implementation and copy are retained pending the user's new chapter assignment.
 

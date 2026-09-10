@@ -1,6 +1,17 @@
 // One entry per imported HTML. Copy the ready-to-fill example from CHAPTERS.md.
 import { chapterCopy } from './chapterCopy.js'
 const entries = {
+  9: {
+    title: 'La flor del nueve',
+    shortText: 'Un jardín que guardaba una fecha especial.',
+    html: 'chapters/09/index.html',
+    preview: 'chapters/09/preview.jpg',
+    caption: 'La princesa escuchó unos golpecitos. Al otro lado del cristal había una pequeña hada.',
+    paragraphs: [
+      'Acercó la mano y apareció una puerta de luz. El hada la esperaba junto a un sendero de hojas, como si llevara tiempo preparando aquella visita.',
+      'En el jardín dormía una flor. No se abría cualquier día: guardaba nueve pequeños deseos y una fecha que la princesa conocía muy bien.',
+    ],
+  },
   23: {
     title: 'Misión: cumpleaños',
     shortText: 'Una última sorpresa, solo para ti.',

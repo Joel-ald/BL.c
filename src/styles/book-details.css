@@ -14,6 +14,13 @@
   pointer-events: none;
   animation: secret-note-in 250ms ease both;
 }
+button.library-sign__rig { appearance: none; border: 0; padding: 0; margin: 0; background: transparent; cursor: pointer; min-height: 44px; }
+button.library-sign__rig:focus-visible { outline: 1px solid #ffe6a5; outline-offset: 4px; border-radius: 3px; }
+.fairy-key-flight { position: fixed; left: 0; top: 0; z-index: 270; width: 110px; height: 120px; pointer-events: none; animation: fairy-brings-key 2800ms ease-in-out both; }
+.fairy-key-flight img { width: 100%; height: 100%; filter: drop-shadow(0 0 10px #e4eb9a80); }
+.fairy-key-flight span { position: absolute; left: 76%; top: 34%; width: 8px; height: 20px; border-top: 5px solid #ffe4a4; border-bottom: 3px solid #ffe4a4; border-right: 2px solid #ffe4a4; transform: rotate(40deg); box-shadow: 3px 0 15px #ffe4a4; }
+@keyframes fairy-brings-key { 0% { opacity: 0; transform: translate(var(--from-x),var(--from-y)) scale(.6); } 15% { opacity: 1; } 75% { opacity: 1; transform: translate(var(--to-x),var(--to-y)) scale(1); } 100% { opacity: 0; transform: translate(var(--to-x),var(--to-y)) scale(.4); } }
+@media(prefers-reduced-motion: reduce) { .fairy-key-flight { animation: none; transform: translate(var(--to-x),var(--to-y)); } }
 .galaxy-story h2 { font-family: Georgia, serif; font-weight: 400; line-height: 1.2; }
 .galaxy-story p { font-family: Georgia, serif; font-weight: 400; line-height: 1.6; }
 .book-secret-note > svg { flex: none; color: #edcc86; }

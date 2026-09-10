@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "oxlint",
-    "test": "node --test src/performance/quality.test.js src/data/bookChapters.test.js src/data/visitedChapters.test.js src/data/htmlChapterConfig.test.js src/hooks/portalSound.test.js src/components/worlds/galaxyEngine.test.js src/components/worlds/htmlWorldBridge.test.js",
+    "test": "node --test src/performance/quality.test.js src/data/bookChapters.test.js src/data/visitedChapters.test.js src/data/fairyKey.test.js src/data/htmlChapterConfig.test.js src/hooks/portalSound.test.js src/components/worlds/galaxyEngine.test.js src/components/worlds/htmlWorldBridge.test.js",
     "preview": "vite preview"
   },
   "dependencies": {
