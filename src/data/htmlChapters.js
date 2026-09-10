@@ -1,6 +1,17 @@
 // One entry per imported HTML. Copy the ready-to-fill example from CHAPTERS.md.
 import { chapterCopy } from './chapterCopy.js'
 const entries = {
+  22: {
+    title: 'Un poquito de caos',
+    shortText: 'Una pequeña travesura antes del siguiente capítulo.',
+    html: 'chapters/22/index.html',
+    preview: 'chapters/22/preview.jpg',
+    caption: 'La princesa encontró una extraña criaturita. Parecía tranquila, pero solo parecía.',
+    paragraphs: [
+      'Había llegado tan lejos que decidió detenerse un momento. Sobre una mesa la esperaba una bolita de slime, junto a un montón de objetos curiosos.',
+      'La tocó despacito y la bolita cambió de forma. Después vino otra ocurrencia, y otra más. Por un ratito no hubo grandes planes, solo ganas de ver qué pasaba.',
+    ],
+  },
   9: {
     title: 'La flor del nueve',
     shortText: 'Un jardín que guardaba una fecha especial.',

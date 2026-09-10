@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import BookModal from './components/library/BookModal.jsx'
 import LibraryScene from './components/library/LibraryScene.jsx'
 import IntroScene from './components/intro/IntroScene.jsx'
@@ -15,6 +15,8 @@ function App() {
   const [libraryVisible, setLibraryVisible] = useState(false)
   const [libraryReady, setLibraryReady] = useState(false)
   const [selectedBook, setSelectedBook] = useState(null)
+  const slimeTaps = useRef(0)
+  const [slimeOpen, setSlimeOpen] = useState(() => { try { return localStorage.getItem('blanca-slime-22-v1') === 'open' } catch { return false } })
   const [fairyOpen, setFairyOpen] = useState(() => { try { return readFairyKey(window.localStorage) } catch { return false } })
   const [fairyProgress, setFairyProgress] = useState(0)
   const [fairyFlight, setFairyFlight] = useState(null)
@@ -126,6 +128,16 @@ function App() {
   }, [])
 
   const selectBook = useCallback((book) => {
+    if (book.id === 22 && !book.unlocked) {
+      slimeTaps.current = Math.min(22, slimeTaps.current + 1)
+      if (slimeTaps.current === 22) {
+        setSlimeOpen(true)
+        try { localStorage.setItem('blanca-slime-22-v1', 'open') } catch { /* Keep the unlock in memory. */ }
+        playBook(book.special)
+        setSelectedBook({ ...book, unlocked: true })
+        return
+      }
+    }
     if (!book.unlocked) { playLock(); return }
     playBook(book.special)
     setSelectedBook(book)
@@ -144,7 +156,7 @@ function App() {
         data-paused={Boolean(selectedBook)}
       >
         {libraryVisible && <LibraryScene
-          books={books.map(book => book.id === 9 ? { ...book, unlocked: fairyOpen } : book)}
+          books={books.map(book => book.id === 9 ? { ...book, unlocked: fairyOpen } : book.id === 22 ? { ...book, unlocked: slimeOpen } : book)}
           onFairyLetter={pickFairyLetter}
           fairyProgress={fairyOpen ? 6 : fairyProgress}
           ready={libraryReady}
