@@ -83,6 +83,8 @@ function ProceduralFlame({ className = 'candle-fire' }) {
     }
 
     const draw = (timestamp) => {
+      const frozen = Boolean(canvas.closest('[data-frozen="true"]'))
+      if (frozen) timestamp = 1000
       if (!lastFrame || timestamp - lastFrame >= interval - 0.5) {
         lastFrame = timestamp - ((timestamp - lastFrame) % interval)
         const time = timestamp / 1000
@@ -137,7 +139,7 @@ function ProceduralFlame({ className = 'candle-fire' }) {
         context.globalCompositeOperation = 'source-over'
       }
 
-      if (!reducedMotion) frameId = window.requestAnimationFrame(draw)
+      if (!reducedMotion && !frozen) frameId = window.requestAnimationFrame(draw)
     }
 
     const redraw = () => {

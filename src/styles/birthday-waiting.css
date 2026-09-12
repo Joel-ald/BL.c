@@ -1,0 +1,37 @@
+.birthday-waiting { min-height:100dvh; background:#08090a; color:#f5f5f2; }
+.birthday-waiting .intro-scene { transition:filter 2s; }
+.birthday-waiting.is-frozen .intro-scene { filter:grayscale(1) contrast(.88) brightness(.65); }
+.birthday-waiting.is-frozen .intro-scene * { animation-play-state:paused!important; }
+.birthday-waiting.is-frozen .intro-content { background:#0b0c0d!important; }
+.waiting-content { position:fixed; inset:30% 5% auto; z-index:40; display:grid; grid-template-columns:1fr minmax(300px,580px) 1fr; align-items:center; gap:28px; animation:waiting-reveal 1.8s ease both; pointer-events:none; }
+.waiting-center { text-align:center; text-shadow:0 2px 18px #000; }
+.waiting-date { font:12px/1.4 'Trebuchet MS',sans-serif; letter-spacing:0; color:#c4c5c7; margin:0 0 13px; }
+.waiting-center h1 { font:normal 27px/1.35 Georgia,serif; letter-spacing:0; margin:0 0 23px; }
+.waiting-center h1 em { font-style:normal; color:#ef6677; }
+.waiting-date { color:#e87987; }
+.waiting-clock > div:last-child strong { color:#ef6677; }
+.waiting-note::before { content:''; display:block; width:27px; height:2px; margin:0 auto 15px; background:#b73149; }
+.waiting-ribbons { position:fixed; inset:0; z-index:35; pointer-events:none; overflow:hidden; }
+.waiting-ribbons i { position:absolute; left:-55px; top:30%; width:115px; height:50%; border-right:2px solid #c3345266; border-radius:50%; transform:rotate(-18deg); animation:ribbon-drift 13s ease-in-out infinite alternate; }
+.waiting-ribbons i:nth-child(2) { left:auto; right:-55px; top:12%; border-right:0; border-left:2px solid #ee526577; animation-delay:-6s; }
+.waiting-ribbons i:nth-child(3) { left:6%; top:82%; width:30%; height:110px; border-right:0; border-top:1px solid #ba344b66; animation-delay:-9s; }
+.waiting-ribbons i:nth-child(4) { left:76%; top:75%; width:35%; height:120px; border-right:0; border-top:1px solid #d6445866; animation-delay:-3s; }
+@keyframes ribbon-drift { from { transform:translateY(-15px) rotate(-18deg); opacity:.35; } to { transform:translateY(20px) rotate(9deg); opacity:.9; } }
+@media(prefers-reduced-motion:reduce) { .waiting-ribbons i { animation:none; } }
+.waiting-clock { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:12px; max-width:440px; margin:auto; }
+.waiting-clock strong { display:block; font:normal 39px/1.1 'Trebuchet MS',sans-serif; font-variant-numeric:tabular-nums; }
+.waiting-clock span { display:block; margin-top:7px; font:11px/1.3 'Trebuchet MS',sans-serif; color:#bfc2c5; }
+.waiting-note { font:italic 17px/1.7 Georgia,serif; color:#c5c7c9; text-align:center; }
+.waiting-sound { position:fixed; z-index:45; right:20px; top:20px; width:48px; height:48px; border:1px solid #ffffff50; border-radius:50%; background:#101113aa; color:#eee; display:grid; place-items:center; cursor:pointer; }
+.waiting-sound:focus-visible { outline:2px solid white; outline-offset:4px; }
+@keyframes waiting-reveal { from { opacity:0; transform:translateY(9px); } to { opacity:1; transform:translateY(0); } }
+@media(max-width:700px) {
+  .waiting-content { inset:30% 20px auto; grid-template-columns:1fr 1fr; gap:17px 12px; }
+  .waiting-center { grid-column:1/-1; grid-row:1; }
+  .waiting-center h1 { font-size:22px; margin-bottom:18px; }
+  .waiting-clock strong { font-size:31px; }
+  .waiting-note { font-size:13px; line-height:1.5; margin:0; }
+  .birthday-waiting.is-frozen .birthday-cake { top:65%; }
+}
+@media(max-height:600px) and (min-width:701px) { .waiting-content { top:29%; } .waiting-center h1 { font-size:21px; margin-bottom:12px; } .waiting-clock strong { font-size:29px; } }
+@media(prefers-reduced-motion:reduce) { .waiting-content { animation:none; } .birthday-waiting .intro-scene { transition:none; } }

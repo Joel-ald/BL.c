@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import BookModal from './components/library/BookModal.jsx'
 import LibraryScene from './components/library/LibraryScene.jsx'
 import IntroScene from './components/intro/IntroScene.jsx'
+import BirthdayWaiting from './components/intro/BirthdayWaiting.jsx'
 import books from './data/books.js'
 import { nextFairyLetter, readFairyKey, saveFairyKey } from './data/fairyKey.js'
 import useMagicSound from './hooks/useMagicSound.js'
@@ -144,6 +145,8 @@ function App() {
   }, [playBook, playLock])
 
   const closeBook = useCallback(() => setSelectedBook(null), [])
+
+  if (new URLSearchParams(window.location.search).get('original') !== '1') return <BirthdayWaiting />
 
   return (
     <main
