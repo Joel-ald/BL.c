@@ -1,6 +1,17 @@
 // One entry per imported HTML. Copy the ready-to-fill example from CHAPTERS.md.
 import { chapterCopy } from './chapterCopy.js'
 const entries = {
+  12: {
+    title: 'Lo que la luz escondía',
+    shortText: 'Ni toda luz hacía bien, ni toda sombra hacía daño.',
+    html: 'chapters/12/index.html',
+    preview: 'chapters/12/preview.jpg',
+    caption: 'La princesa encontró flores doradas junto al lago. Eran preciosas, pero sus tallos escondían espinas.',
+    paragraphs: [
+      'El agua brillaba tanto que parecía tranquila. Pero debajo giraba una corriente. Cuando la luna cubrió el sol, la princesa pensó que todo se pondría peor.',
+      'Entonces floreció la noche y apareció un camino. A veces lo que parecía bueno podía hacer daño, y aquello que parecía malo guardaba algo bonito.',
+    ],
+  },
   22: {
     title: 'Un poquito de caos',
     shortText: 'Una pequeña travesura antes del siguiente capítulo.',
